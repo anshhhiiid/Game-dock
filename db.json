@@ -1,0 +1,1000 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "PlayStation 5 Slim",
+      "brand": "Sony",
+      "category": "Console",
+      "price": 49999,
+      "description": "Next-generation gaming console with powerful performance.",
+      "image": "/images/ps5.png",
+      "rating": 4.9,
+      "stock": 10,
+      "specifications": {
+        "processor": "AMD Zen 2",
+        "storage": "1TB SSD",
+        "resolution": "4K"
+      }
+    },
+    {
+      "id": "3",
+      "name": "PlayStation 4 Pro",
+      "brand": "Sony",
+      "category": "Console",
+      "price": 29999,
+      "description": "Enhanced PS4 with 4K gaming support and improved performance.",
+      "image": "/images/ps4pro.png",
+      "rating": 4.7,
+      "stock": 12,
+      "specifications": {
+        "processor": "AMD Jaguar 8-core",
+        "storage": "1TB HDD",
+        "resolution": "4K"
+      }
+    },
+    {
+      "id": "4",
+      "name": "PlayStation 3",
+      "brand": "Sony",
+      "category": "Console",
+      "price": 14999,
+      "description": "Classic seventh-generation console with a huge game library.",
+      "image": "/images/ps3.png",
+      "rating": 4.5,
+      "stock": 5,
+      "specifications": {
+        "processor": "Cell Broadband Engine",
+        "storage": "250GB HDD",
+        "resolution": "1080p"
+      }
+    },
+    {
+      "id": "5",
+      "name": "PlayStation Portal",
+      "brand": "Sony",
+      "category": "Handheld Console",
+      "price": 19999,
+      "description": "Handheld remote player that streams your PS5 games over Wi-Fi.",
+      "image": "/images/PS_portable.png",
+      "rating": 4.4,
+      "stock": 10,
+      "specifications": {
+        "processor": "Remote Play streaming",
+        "storage": "N/A",
+        "resolution": "1080p"
+      }
+    },
+    {
+      "id": "6",
+      "name": "Xbox Series X",
+      "brand": "Microsoft",
+      "category": "Console",
+      "price": 49999,
+      "description": "Microsoft's most powerful console with 4K gaming and fast load times.",
+      "image": "/images/xbox-x.png",
+      "rating": 4.8,
+      "stock": 14,
+      "specifications": {
+        "processor": "AMD Zen 2",
+        "storage": "1TB SSD",
+        "resolution": "4K"
+      }
+    },
+    {
+      "id": "7",
+      "name": "Xbox One S",
+      "brand": "Microsoft",
+      "category": "Console",
+      "price": 19999,
+      "description": "Compact Xbox One with 4K video streaming and HDR support.",
+      "image": "/images/xbox ones.png",
+      "rating": 4.5,
+      "stock": 9,
+      "specifications": {
+        "processor": "AMD Jaguar 8-core",
+        "storage": "1TB HDD",
+        "resolution": "4K HDR (video)"
+      }
+    },
+    {
+      "id": "8",
+      "name": "Xbox One",
+      "brand": "Microsoft",
+      "category": "Console",
+      "price": 15999,
+      "description": "Original Xbox One with a wide library of games and apps.",
+      "image": "/images/xboxone.png",
+      "rating": 4.3,
+      "stock": 7,
+      "specifications": {
+        "processor": "AMD Jaguar 8-core",
+        "storage": "500GB HDD",
+        "resolution": "1080p"
+      }
+    },
+    {
+      "id": "9",
+      "name": "Xbox 360",
+      "brand": "Microsoft",
+      "category": "Console",
+      "price": 9999,
+      "description": "Retro favorite that popularized online console gaming.",
+      "image": "/images/xbox360.png",
+      "rating": 4.4,
+      "stock": 5,
+      "specifications": {
+        "processor": "IBM Xenon (3-core)",
+        "storage": "250GB HDD",
+        "resolution": "720p"
+      }
+    },
+    {
+      "id": "10",
+      "name": "Nintendo Switch",
+      "brand": "Nintendo",
+      "category": "Console",
+      "price": 24999,
+      "description": "Hybrid console that works both docked and as a handheld.",
+      "image": "/images/Nontendo_Switch.png",
+      "rating": 4.8,
+      "stock": 18,
+      "specifications": {
+        "processor": "NVIDIA Custom Tegra X1",
+        "storage": "32GB",
+        "resolution": "1080p (docked)"
+      }
+    },
+    {
+      "id": "11",
+      "name": "Nintendo Switch Lite",
+      "brand": "Nintendo",
+      "category": "Handheld Console",
+      "price": 17999,
+      "description": "Compact, lightweight handheld-only version of the Switch.",
+      "image": "/images/NintendoLite.png",
+      "rating": 4.6,
+      "stock": 15,
+      "specifications": {
+        "processor": "NVIDIA Custom Tegra X1",
+        "storage": "32GB",
+        "resolution": "720p"
+      }
+    },
+    {
+      "id": "12",
+      "name": "Nintendo Switch 2 Limited Edition",
+      "brand": "Nintendo",
+      "category": "Console",
+      "price": 39999,
+      "description": "Next-generation Switch with a bigger screen and improved performance.",
+      "image": "/images/switch 2lmtd.png",
+      "rating": 4.9,
+      "stock": 1,
+      "specifications": {
+        "processor": "NVIDIA Custom SoC",
+        "storage": "256GB",
+        "resolution": "4K (docked)"
+      }
+    },
+    {
+      "id": "13",
+      "name": "Nintendo 3DS",
+      "brand": "Nintendo",
+      "category": "Handheld Console",
+      "price": 9999,
+      "description": "Handheld console with glasses-free 3D display.",
+      "image": "/images/Nintendo_3sd.png",
+      "rating": 4.5,
+      "stock": 3,
+      "specifications": {
+        "processor": "ARM11 MPCore",
+        "storage": "2GB SD Card",
+        "resolution": "800x240 (3D top screen)"
+      }
+    },
+    {
+      "id": "14",
+      "name": "Steam Deck",
+      "brand": "Valve",
+      "category": "Handheld PC",
+      "price": 54999,
+      "description": "Portable gaming PC that runs your Steam library anywhere.",
+      "image": "/images/Steamdeck.png",
+      "rating": 4.8,
+      "stock": 11,
+      "specifications": {
+        "processor": "AMD Zen 2 APU",
+        "storage": "512GB NVMe SSD",
+        "resolution": "1280x800"
+      }
+    },
+    {
+      "id": "15",
+      "name": "ASUS ROG Ally",
+      "brand": "ASUS",
+      "category": "Handheld PC",
+      "price": 64999,
+      "description": "Powerful Windows handheld with a 120Hz display.",
+      "image": "/images/ROG_Ally.png",
+      "rating": 4.6,
+      "stock": 8,
+      "specifications": {
+        "processor": "AMD Ryzen Z1 Extreme",
+        "storage": "512GB SSD",
+        "resolution": "1080p"
+      }
+    },
+    {
+      "id": "16",
+      "name": "Lenovo Legion Go",
+      "brand": "Lenovo",
+      "category": "Handheld PC",
+      "price": 69999,
+      "description": "Large 8.8-inch QHD+ handheld with detachable controllers.",
+      "image": "/images/Legion handheld.png",
+      "rating": 4.5,
+      "stock": 7,
+      "specifications": {
+        "processor": "AMD Ryzen Z1 Extreme",
+        "storage": "512GB SSD",
+        "resolution": "2560x1600"
+      }
+    },
+    {
+      "id": "17",
+      "name": "MSI Claw",
+      "brand": "MSI",
+      "category": "Handheld PC",
+      "price": 59999,
+      "description": "Windows handheld powered by an Intel Core Ultra processor.",
+      "image": "/images/MSI_handheld.png",
+      "rating": 4.2,
+      "stock": 6,
+      "specifications": {
+        "processor": "Intel Core Ultra 7 155H",
+        "storage": "512GB SSD",
+        "resolution": "1080p"
+      }
+    },
+    {
+      "id": "18",
+      "name": "OneXPlayer Handheld",
+      "brand": "ONEXPLAYER",
+      "category": "Handheld PC",
+      "price": 74999,
+      "description": "High-end Windows gaming handheld with a large display.",
+      "image": "/images/OneXPlayer.png",
+      "rating": 4.4,
+      "stock": 5,
+      "specifications": {
+        "processor": "AMD Ryzen 7 7840U",
+        "storage": "1TB SSD",
+        "resolution": "2560x1600"
+      }
+    },
+    {
+      "id": "19",
+      "name": "PlayStation 5 Pulse 3D Wireless Headset",
+      "brand": "Sony",
+      "category": "Headset",
+      "price": 8999,
+      "description": "Wireless headset with 3D audio, dual noise-cancelling microphones and long battery life for PS5.",
+      "image": "/images/ps5 headset.png",
+      "rating": 4.7,
+      "stock": 15,
+      "specifications": {
+        "connectivity": "Wireless 2.4GHz",
+        "battery": "Rechargeable, up to 12 hours",
+        "features": "3D Audio, Noise-Cancelling Mic",
+        "compatibility": "PlayStation 5, PlayStation 4, PC"
+      }
+    },
+    {
+      "id": "20",
+      "name": "Xbox Wireless Controller Limited Edition",
+      "brand": "Microsoft",
+      "category": "Controller",
+      "price": 6999,
+      "description": "Limited edition Xbox wireless controller with a textured grip and a custom design.",
+      "image": "/images/xbox lmtd controller.png",
+      "rating": 4.8,
+      "stock": 12,
+      "specifications": {
+        "connectivity": "Wireless, Bluetooth, USB-C",
+        "battery": "2x AA or Rechargeable Pack",
+        "features": "Hybrid D-pad, Textured Grip, Share Button",
+        "compatibility": "Xbox Series X|S, Xbox One, PC"
+      }
+    },
+    {
+      "id": "21",
+      "name": "Xbox Wireless Controller X25 Special Edition",
+      "brand": "Microsoft",
+      "category": "Controller",
+      "price": 5999,
+      "description": "Special edition Xbox wireless controller with a unique finish and responsive controls.",
+      "image": "/images/xbox25thcontroller.png",
+      "rating": 4.7,
+      "stock": 14,
+      "specifications": {
+        "connectivity": "Wireless, Bluetooth, USB-C",
+        "battery": "2x AA or Rechargeable Pack",
+        "features": "Hybrid D-pad, Textured Grip, Share Button",
+        "compatibility": "Xbox Series X|S, Xbox One, PC"
+      }
+    },
+    {
+      "id": "22",
+      "name": "Nintendo Switch Pro Controller",
+      "brand": "Nintendo",
+      "category": "Controller",
+      "price": 5999,
+      "description": "Premium Switch controller with motion controls, HD rumble and long battery life.",
+      "image": "/images/SwitchPro_Controller.png",
+      "rating": 4.9,
+      "stock": 16,
+      "specifications": {
+        "connectivity": "Wireless, Bluetooth, USB-C",
+        "battery": "Rechargeable, up to 40 hours",
+        "features": "HD Rumble, Motion Controls, amiibo Support",
+        "compatibility": "Nintendo Switch"
+      }
+    },
+    {
+      "id": "23",
+      "name": "Audeze LCD Gaming Headphones",
+      "brand": "Audeze",
+      "category": "Headset",
+      "price": 97999,
+      "description": "Premium planar magnetic headphones with studio-grade, high-fidelity sound.",
+      "image": "/images/Audeze LCD.png",
+      "rating": 4.8,
+      "stock": 5,
+      "specifications": {
+        "connectivity": "Wired",
+        "battery": "N/A",
+        "features": "Planar Magnetic Drivers, Open-Back Design",
+        "compatibility": "PC, PlayStation, Xbox"
+      }
+    },
+    {
+      "id": "24",
+      "name": "Microsoft Gaming Headset",
+      "brand": "Microsoft",
+      "category": "Headset",
+      "price": 7999,
+      "description": "Comfortable gaming headset with clear chat audio and an adjustable microphone.",
+      "image": "/images/MicroHead.png",
+      "rating": 4.5,
+      "stock": 13,
+      "specifications": {
+        "connectivity": "Wireless",
+        "battery": "Rechargeable",
+        "features": "Spatial Audio, Detachable Mic",
+        "compatibility": "Xbox Series X|S, Xbox One, PC"
+      }
+    },
+    {
+      "id": "25",
+      "name": "Logitech Racing Steering Wheel",
+      "brand": "Logitech",
+      "category": "Racing Wheel",
+      "price": 24999,
+      "description": "Force feedback steering wheel with pedals for realistic racing games.",
+      "image": "/images/Logitech stearing.png",
+      "rating": 4.7,
+      "stock": 7,
+      "specifications": {
+        "connectivity": "Wired USB",
+        "battery": "N/A",
+        "features": "Force Feedback, Pedal Set, Leather-Wrapped Wheel",
+        "compatibility": "PlayStation, Xbox, PC"
+      }
+    }
+  ],
+  "games": [
+    {
+      "id": "26",
+      "name": "GTA V",
+      "brand": "Rockstar Games",
+      "category": "Action Adventure",
+      "platform": "PlayStation, Xbox, PC",
+      "price": 2499,
+      "rating": 4.9,
+      "stock": 20,
+      "image": "/images/Grand Theft Auto V Premium Edition - [PlayStation 4].jpg"
+    },
+    {
+      "id": "27",
+      "name": "Red Dead Redemption 2",
+      "brand": "Rockstar Games",
+      "category": "Action Adventure",
+      "platform": "PlayStation, Xbox, PC",
+      "price": 2999,
+      "rating": 4.9,
+      "stock": 15,
+      "image": "/images/Red Dead Redemption 2 - PlayStation 4 Rockstar….jpg"
+    },
+    {
+      "id": "28",
+      "name": "God of War Ragnarok",
+      "brand": "PlayStation Studios",
+      "category": "Action",
+      "platform": "PlayStation",
+      "price": 3499,
+      "rating": 4.8,
+      "stock": 12,
+      "image": "/images/God of War (2018) para PC - PS4 _ 3DJuegos.jpg"
+    },
+    {
+      "id": "29",
+      "name": "Spider-Man 2",
+      "brand": "PlayStation Studios",
+      "category": "Action Adventure",
+      "platform": "PlayStation",
+      "price": 3999,
+      "rating": 4.9,
+      "stock": 10,
+      "image": "/images/Spider-Man 2 PS5.jpg"
+    },
+    {
+      "id": "30",
+      "name": "Cyberpunk 2077",
+      "brand": "CD Projekt Red",
+      "category": "RPG",
+      "platform": "PlayStation, Xbox, PC",
+      "price": 2499,
+      "rating": 4.6,
+      "stock": 14,
+      "image": "/images/cyber.jpg"
+    },
+    {
+      "id": "31",
+      "name": "Far Cry 6",
+      "brand": "Ubisoft",
+      "category": "Action",
+      "platform": "PlayStation, Xbox, PC",
+      "price": 2999,
+      "rating": 4.2,
+      "stock": 15,
+      "image": "/images/farcry6.jpg"
+    },
+    {
+      "id": "32",
+      "name": "Forza Horizon 5",
+      "brand": "Playground Games",
+      "category": "Racing",
+      "platform": "Xbox, PC",
+      "price": 3499,
+      "rating": 4.8,
+      "stock": 20,
+      "image": "/images/forz5.png"
+    },
+    {
+      "id": "33",
+      "name": "Forza Horizon 4 Standard Edition",
+      "brand": "Playground Games",
+      "category": "Racing",
+      "platform": "Xbox, PC",
+      "price": 1999,
+      "rating": 4.7,
+      "stock": 18,
+      "image": "/images/forza4.jpg"
+    },
+    {
+      "id": "34",
+      "name": "Forza Horizon 6 Premium Edition",
+      "brand": "Playground Games",
+      "category": "Racing",
+      "platform": "Xbox, PC",
+      "price": 4499,
+      "rating": 4.8,
+      "stock": 11,
+      "image": "/images/forza6.jpg"
+    },
+    {
+      "id": "35",
+      "name": "Grand Theft Auto: The Trilogy – The Definitive Edition",
+      "brand": "Rockstar Games",
+      "category": "Action-Adventure",
+      "platform": "PlayStation, Xbox, Nintendo Switch, PC",
+      "price": 2999,
+      "rating": 3.9,
+      "stock": 10,
+      "image": "/images/trilogy.jpg"
+    },
+    {
+      "id": "36",
+      "name": "Grand Theft Auto VI",
+      "brand": "Rockstar Games",
+      "category": "Action-Adventure",
+      "platform": "PlayStation, Xbox",
+      "price": 5999,
+      "rating": 4.9,
+      "stock": 4,
+      "image": "/images/gta6.jpg"
+    },
+    {
+      "id": "37",
+      "name": "Mario Kart 8 Deluxe",
+      "brand": "Nintendo",
+      "category": "Racing",
+      "platform": "Nintendo Switch",
+      "price": 3999,
+      "rating": 4.9,
+      "stock": 22,
+      "image": "/images/MarioKart Delux 8 - Nintendo Switch.jpg"
+    },
+    {
+      "id": "38",
+      "name": "Minecraft Super Mario Mash-up",
+      "brand": "Mojang Studios",
+      "category": "Sandbox",
+      "platform": "Nintendo Switch",
+      "price": 1999,
+      "rating": 4.6,
+      "stock": 14,
+      "image": "/images/Minecraft Super Mario Mash-up SWITCH EUA.jpg"
+    },
+    {
+      "id": "339",
+      "name": "The Last of Us Part I",
+      "brand": "Naughty Dog",
+      "category": "Action-Adventure",
+      "platform": "PlayStation, PC",
+      "price": 4499,
+      "rating": 4.8,
+      "stock": 11,
+      "image": "/images/The Last of Us Part 1 PS5.jpg"
+    },
+    {
+      "id": "440",
+      "name": "The Legend of Zelda: Breath of the Wild",
+      "brand": "Nintendo",
+      "category": "Action-Adventure",
+      "platform": "Nintendo Switch",
+      "price": 3999,
+      "rating": 4.9,
+      "stock": 19,
+      "image": "/images/zelda.jpg"
+    },
+    {
+      "id": "441",
+      "name": "Watch Dogs 2",
+      "brand": "Ubisoft",
+      "category": "Action-Adventure",
+      "platform": "PlayStation, Xbox, PC",
+      "price": 1499,
+      "rating": 4.1,
+      "stock": 9,
+      "image": "/images/watchdogs2.jpg"
+    }
+  ],
+  "users": [
+    {
+      "name": "anshhhiiid",
+      "email": "why.not.anshii@gmail.com",
+      "password": "Anshid10",
+      "id": "IKAQ3xUmD04"
+    }
+  ],
+  "orders": [
+    {
+      "userId": "IKAQ3xUmD04",
+      "customer": {
+        "name": "anshhhiiid",
+        "email": "why.not.anshii@gmail.com",
+        "phone": "8848305066",
+        "address": "vfevfrfv",
+        "city": "rfrffw",
+        "state": "vbfvf bvf",
+        "pincode": "123456"
+      },
+      "items": [
+        {
+          "id": "3",
+          "name": "PlayStation 4 Pro",
+          "image": "/images/ps4pro.png",
+          "price": 29999,
+          "quantity": 1,
+          "itemType": "product"
+        },
+        {
+          "id": "1",
+          "name": "PlayStation 5 Slim",
+          "image": "/images/ps5.png",
+          "price": 49999,
+          "quantity": 1,
+          "itemType": "product"
+        }
+      ],
+      "subtotal": 79998,
+      "shipping": 0,
+      "total": 79998,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-14T08:37:34.094Z",
+      "id": "YQ7-SUf7XG8"
+    },
+    {
+      "userId": "IKAQ3xUmD04",
+      "customer": {
+        "name": "anshhhiiid",
+        "email": "why.not.anshii@gmail.com",
+        "phone": "8848305066",
+        "address": "ghtrh trhe",
+        "city": "vdc",
+        "state": "dvc",
+        "pincode": "213455"
+      },
+      "items": [
+        {
+          "id": "3",
+          "name": "PlayStation 4 Pro",
+          "image": "/images/ps4pro.png",
+          "price": 29999,
+          "quantity": 1,
+          "itemType": "product"
+        }
+      ],
+      "subtotal": 29999,
+      "shipping": 0,
+      "total": 29999,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-14T08:41:01.237Z",
+      "id": "FFTQZ5UTIrM"
+    },
+    {
+      "userId": "IKAQ3xUmD04",
+      "customer": {
+        "name": "anshhhiiid",
+        "email": "why.not.anshii@gmail.com",
+        "phone": "8848305066",
+        "address": "jhmfhgngnb",
+        "city": "fgdsfdgfd",
+        "state": "gfsdsdfg",
+        "pincode": "654334"
+      },
+      "items": [
+        {
+          "id": "1",
+          "name": "PlayStation 5 Slim",
+          "image": "/images/ps5.png",
+          "price": 49999,
+          "quantity": 1,
+          "itemType": "product"
+        }
+      ],
+      "subtotal": 49999,
+      "shipping": 0,
+      "total": 49999,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-14T08:43:57.231Z",
+      "id": "5L37Eq5a_pY"
+    },
+    {
+      "userId": "IKAQ3xUmD04",
+      "customer": {
+        "name": "anshhhiiid",
+        "email": "why.not.anshii@gmail.com",
+        "phone": "8848305066",
+        "address": "vbf fgb",
+        "city": "fdvfd",
+        "state": "fsdvfvd",
+        "pincode": "543342"
+      },
+      "items": [
+        {
+          "id": "18",
+          "name": "OneXPlayer Handheld",
+          "image": "/images/OneXPlayer.png",
+          "price": 74999,
+          "quantity": 1,
+          "itemType": "product"
+        }
+      ],
+      "subtotal": 74999,
+      "shipping": 0,
+      "total": 74999,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-14T08:51:25.341Z",
+      "id": "9SzjuhfDzyY"
+    },
+    {
+      "userId": "IKAQ3xUmD04",
+      "customer": {
+        "name": "anshhhiiid",
+        "email": "why.not.anshii@gmail.com",
+        "phone": "8848305066",
+        "address": "vcxdfv",
+        "city": "dfgdf",
+        "state": "dfsdfs",
+        "pincode": "432432"
+      },
+      "items": [
+        {
+          "id": "5",
+          "name": "PlayStation Portal",
+          "image": "/images/PS_portable.png",
+          "price": 19999,
+          "quantity": 1,
+          "itemType": "product"
+        }
+      ],
+      "subtotal": 19999,
+      "shipping": 0,
+      "total": 19999,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-14T08:54:11.822Z",
+      "id": "6tDerkgvLVw"
+    },
+    {
+      "userId": "IKAQ3xUmD04",
+      "customer": {
+        "name": "anshhhiiid",
+        "email": "why.not.anshii@gmail.com",
+        "phone": "8848305066",
+        "address": "dfvdfv",
+        "city": "sdfdsf",
+        "state": "dfvdf",
+        "pincode": "312321"
+      },
+      "items": [
+        {
+          "id": "26",
+          "name": "GTA V",
+          "image": "/images/Grand Theft Auto V Premium Edition - [PlayStation 4].jpg",
+          "price": 2499,
+          "quantity": 1,
+          "itemType": "game"
+        }
+      ],
+      "subtotal": 2499,
+      "shipping": 0,
+      "total": 2499,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-14T09:19:26.869Z",
+      "id": "LdItEIavI3o"
+    },
+    {
+      "userId": "IKAQ3xUmD04",
+      "customer": {
+        "name": "anshhhiiid",
+        "email": "why.not.anshii@gmail.com",
+        "phone": "8848305066",
+        "address": "dsggdrfs",
+        "city": "fsddsf",
+        "state": "dsfsfde",
+        "pincode": "231231"
+      },
+      "items": [
+        {
+          "id": "6",
+          "name": "Xbox Series X",
+          "image": "/images/xbox-x.png",
+          "price": 49999,
+          "quantity": 1,
+          "itemType": "product"
+        },
+        {
+          "id": "3",
+          "name": "PlayStation 4 Pro",
+          "image": "/images/ps4pro.png",
+          "price": 29999,
+          "quantity": 1,
+          "itemType": "product"
+        },
+        {
+          "id": "4",
+          "name": "PlayStation 3",
+          "image": "/images/ps3.png",
+          "price": 14999,
+          "quantity": 1,
+          "itemType": "product"
+        },
+        {
+          "id": "5",
+          "name": "PlayStation Portal",
+          "image": "/images/PS_portable.png",
+          "price": 19999,
+          "quantity": 1,
+          "itemType": "product"
+        }
+      ],
+      "subtotal": 114996,
+      "shipping": 0,
+      "total": 114996,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-14T09:51:16.980Z",
+      "id": "Cg7y1FRklss"
+    },
+    {
+      "userId": "IKAQ3xUmD04",
+      "customer": {
+        "name": "anshhhiiid",
+        "email": "why.not.anshii@gmail.com",
+        "phone": "8848305066",
+        "address": "fdgfdv",
+        "city": "dfvdfv",
+        "state": "dfvdfv",
+        "pincode": "321321"
+      },
+      "items": [
+        {
+          "id": "26",
+          "name": "GTA V",
+          "image": "/images/Grand Theft Auto V Premium Edition - [PlayStation 4].jpg",
+          "price": 2499,
+          "quantity": 1,
+          "itemType": "game"
+        },
+        {
+          "id": "1",
+          "name": "PlayStation 5 Slim",
+          "image": "/images/ps5.png",
+          "price": 49999,
+          "quantity": 1,
+          "itemType": "product"
+        }
+      ],
+      "subtotal": 52498,
+      "shipping": 0,
+      "total": 52498,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-14T10:06:27.387Z",
+      "id": "HX7bqYwFXfo"
+    },
+    {
+      "userId": "IKAQ3xUmD04",
+      "customer": {
+        "name": "anshhhiiid",
+        "email": "why.not.anshii@gmail.com",
+        "phone": "8848305066",
+        "address": "sdcdcs",
+        "city": "ccds",
+        "state": "dsds",
+        "pincode": "132123"
+      },
+      "items": [
+        {
+          "id": "26",
+          "name": "GTA V",
+          "image": "/images/Grand Theft Auto V Premium Edition - [PlayStation 4].jpg",
+          "price": 2499,
+          "quantity": 1,
+          "itemType": "game"
+        }
+      ],
+      "subtotal": 2499,
+      "shipping": 0,
+      "total": 2499,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-14T10:56:51.044Z",
+      "id": "UnVXmlXucfI"
+    },
+    {
+      "userId": "IKAQ3xUmD04",
+      "customer": {
+        "name": "anshhhiiid",
+        "email": "why.not.anshii@gmail.com",
+        "phone": "8848305066",
+        "address": "dfdfs",
+        "city": "dfd",
+        "state": "sdffds",
+        "pincode": "321231"
+      },
+      "items": [
+        {
+          "id": "1",
+          "name": "PlayStation 5 Slim",
+          "image": "/images/ps5.png",
+          "price": 49999,
+          "quantity": 4,
+          "itemType": "product"
+        }
+      ],
+      "subtotal": 199996,
+      "shipping": 0,
+      "total": 199996,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-14T17:36:39.177Z",
+      "id": "JSytDbkLy3M"
+    },
+    {
+      "userId": "IKAQ3xUmD04",
+      "customer": {
+        "name": "anshhhiiid",
+        "email": "why.not.anshii@gmail.com",
+        "phone": "8848305066",
+        "address": "ewfcdxvsdfvs",
+        "city": "dfsdsf",
+        "state": "dsfdfsdsf",
+        "pincode": "132321"
+      },
+      "items": [
+        {
+          "id": "34",
+          "name": "Forza Horizon 6 Premium Edition",
+          "image": "/images/forza6.jpg",
+          "price": 4499,
+          "quantity": 1,
+          "itemType": "game"
+        },
+        {
+          "id": "1",
+          "name": "PlayStation 5 Slim",
+          "image": "/images/ps5.png",
+          "price": 49999,
+          "quantity": 1,
+          "itemType": "product"
+        }
+      ],
+      "subtotal": 54498,
+      "shipping": 0,
+      "total": 54498,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-16T04:17:45.250Z",
+      "id": "29bzI4upGq4"
+    },
+    {
+      "userId": "IKAQ3xUmD04",
+      "customer": {
+        "name": "anshhhiiid",
+        "email": "why.not.anshii@gmail.com",
+        "phone": "8848305066",
+        "address": "fdgfd",
+        "city": "fdgfd",
+        "state": "dfsdfs",
+        "pincode": "231312"
+      },
+      "items": [
+        {
+          "id": "4",
+          "name": "PlayStation 3",
+          "image": "/images/ps3.png",
+          "price": 14999,
+          "quantity": 1,
+          "itemType": "product"
+        },
+        {
+          "id": "11",
+          "name": "Nintendo Switch Lite",
+          "image": "/images/NintendoLite.png",
+          "price": 17999,
+          "quantity": 1,
+          "itemType": "product"
+        }
+      ],
+      "subtotal": 32998,
+      "shipping": 0,
+      "total": 32998,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-16T10:34:08.524Z",
+      "id": "FysDvFfpuLc"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
