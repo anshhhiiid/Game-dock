@@ -428,13 +428,13 @@ function OrderSuccess() {
             Back to Home
           </button>
 
-          <button
-            onClick={() => navigate("/orders")}
-            className="flex items-center justify-center gap-2 border border-[#504466] hover:bg-[#211B32] px-7 py-3.5 rounded-xl font-semibold transition"
-          >
-            View My Orders
-            <ArrowRight size={18} />
-          </button>
+         <button
+  onClick={() => navigate("/my-orders")}
+  className="flex items-center justify-center gap-2 border border-[#504466] hover:bg-[#211B32] px-7 py-3.5 rounded-xl font-semibold transition"
+>
+  View My Orders
+  <ArrowRight size={18} />
+</button>
 
         </div>
 

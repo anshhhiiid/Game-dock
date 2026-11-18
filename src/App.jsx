@@ -28,7 +28,7 @@ function AppContent() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
 
-  // Load each signed-in user's cart and wishlist from JSON Server.
+  
   useEffect(() => {
     if (user?.id) {
       dispatch(resetCartState());

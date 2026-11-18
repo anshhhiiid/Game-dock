@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -13,41 +14,44 @@ function ProductCart({ product, itemType = "product" }) {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.auth.user);
+  const cartItems = useSelector((state) => state.cart.items);
+  const wishlistItems = useSelector((state) => state.wishlist.items);
 
-  const cartItems = useSelector(
-    (state) => state.cart.items
-  );
+  if (!product) return null;
 
-  const wishlistItems = useSelector(
-    (state) => state.wishlist.items
-  );
+  // STOCK CHECK
+  const stock = Number(product.stock) || 0;
+  const isOutOfStock = stock <= 0;
+  const isLowStock = stock > 0 && stock <= 3;
+
+  // CHECK LOGIN
+  const checkLogin = () => {
+    if (!user) {
+      navigate("/login");
+      return false;
+    }
+
+    return true;
+  };
+
+  // CHECK SAME PRODUCT
+  const isSameProduct = (item) =>
+    String(item.id) === String(product.id) &&
+    item.itemType === itemType;
 
   // CHECK WISHLIST
-  const isWishlisted = wishlistItems.some(
-    (item) =>
-      String(item.id) === String(product.id) &&
-      item.itemType === itemType
-  );
+  const isWishlisted = wishlistItems.some(isSameProduct);
 
   // ADD TO CART
   const handleAddToCart = () => {
-    if (!user) {
-      navigate("/login");
-      return;
-    }
+    if (!checkLogin()) return;
 
-    const stock = Number(product.stock) || 0;
-
-    if (stock <= 0) {
+    if (isOutOfStock) {
       toast.error("This product is out of stock!");
       return;
     }
 
-    const existingItem = cartItems.find(
-      (item) =>
-        String(item.id) === String(product.id) &&
-        item.itemType === itemType
-    );
+    const existingItem = cartItems.find(isSameProduct);
 
     if (existingItem) {
       toast("This product is already in your cart!", {
@@ -59,15 +63,14 @@ function ProductCart({ product, itemType = "product" }) {
     dispatch(addToCart({ product, itemType }))
       .unwrap()
       .then(() => toast.success(`${product.name} added to cart!`))
-      .catch((error) => toast.error(error || "Could not update your cart."));
+      .catch((error) =>
+        toast.error(error || "Could not update your cart.")
+      );
   };
 
   // ADD TO WISHLIST
   const handleAddToWishlist = () => {
-    if (!user) {
-      navigate("/login");
-      return;
-    }
+    if (!checkLogin()) return;
 
     if (isWishlisted) {
       toast("Already in your wishlist!", {
@@ -79,7 +82,9 @@ function ProductCart({ product, itemType = "product" }) {
     dispatch(addToWishlist({ product, itemType }))
       .unwrap()
       .then(() => toast.success(`${product.name} added to wishlist!`))
-      .catch((error) => toast.error(error || "Could not update your wishlist."));
+      .catch((error) =>
+        toast.error(error || "Could not update your wishlist.")
+      );
   };
 
   // VIEW DETAILS
@@ -89,8 +94,6 @@ function ProductCart({ product, itemType = "product" }) {
     navigate(`/product/${product.id}?type=${type}`);
   };
 
-  if (!product) return null;
-
   return (
     <div
       className="bg-[#1A1827] border border-[#292638]
@@ -99,7 +102,6 @@ function ProductCart({ product, itemType = "product" }) {
     >
       {/* IMAGE */}
       <div className="relative h-64 bg-[#111111] overflow-hidden">
-
         <button
           type="button"
           onClick={handleViewDetails}
@@ -131,22 +133,20 @@ function ProductCart({ product, itemType = "product" }) {
           />
         </button>
 
-      {/* STOCK STATUS */}
-{Number(product.stock) <= 0 ? (
-  <span className="absolute top-3 left-3 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
-    Out of Stock
-  </span>
-) : Number(product.stock) <= 3 ? (
-  <span className="absolute top-3 left-3 bg-orange-600 text-white text-xs px-3 py-1 rounded-full">
-    Only {product.stock} left!
-  </span>
-) : null}
-
+        {/* STOCK STATUS */}
+        {isOutOfStock ? (
+          <span className="absolute top-3 left-3 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
+            Out of Stock
+          </span>
+        ) : isLowStock ? (
+          <span className="absolute top-3 left-3 bg-orange-600 text-white text-xs px-3 py-1 rounded-full">
+            Only {stock} left!
+          </span>
+        ) : null}
       </div>
 
       {/* PRODUCT DETAILS */}
       <div className="p-4">
-
         <p className="text-purple-400 text-xs font-semibold uppercase">
           {product.brand}
         </p>
@@ -167,7 +167,6 @@ function ProductCart({ product, itemType = "product" }) {
 
         {/* RATING */}
         <div className="flex items-center gap-1 mt-3">
-
           <Star
             size={15}
             className="fill-yellow-400 text-yellow-400"
@@ -176,7 +175,6 @@ function ProductCart({ product, itemType = "product" }) {
           <span className="text-sm text-gray-300">
             {product.rating || "N/A"}
           </span>
-
         </div>
 
         {/* PRICE */}
@@ -187,7 +185,7 @@ function ProductCart({ product, itemType = "product" }) {
         {/* ADD TO CART */}
         <button
           onClick={handleAddToCart}
-          disabled={Number(product.stock) <= 0}
+          disabled={isOutOfStock}
           className="w-full mt-4 flex items-center
           justify-center gap-2 py-2.5 rounded-lg
           bg-purple-600 hover:bg-purple-700
@@ -196,11 +194,8 @@ function ProductCart({ product, itemType = "product" }) {
         >
           <ShoppingCart size={17} />
 
-          {Number(product.stock) <= 0
-            ? "Out of Stock"
-            : "Add to Cart"}
+          {isOutOfStock ? "Out of Stock" : "Add to Cart"}
         </button>
-
       </div>
     </div>
   );

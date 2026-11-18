@@ -9,7 +9,7 @@
       "description": "Next-generation gaming console with powerful performance.",
       "image": "/images/ps5.png",
       "rating": 4.9,
-      "stock": 10,
+      "stock": 9,
       "specifications": {
         "processor": "AMD Zen 2",
         "storage": "1TB SSD",
@@ -169,7 +169,7 @@
       "description": "Next-generation Switch with a bigger screen and improved performance.",
       "image": "/images/switch 2lmtd.png",
       "rating": 4.9,
-      "stock": 1,
+      "stock": 2,
       "specifications": {
         "processor": "NVIDIA Custom SoC",
         "storage": "256GB",
@@ -217,7 +217,7 @@
       "description": "Powerful Windows handheld with a 120Hz display.",
       "image": "/images/ROG_Ally.png",
       "rating": 4.6,
-      "stock": 8,
+      "stock": 7,
       "specifications": {
         "processor": "AMD Ryzen Z1 Extreme",
         "storage": "512GB SSD",
@@ -392,10 +392,6 @@
       }
     }
   ],
-
-
-
-
   "games": [
     {
       "id": "26",
@@ -515,7 +511,7 @@
       "platform": "PlayStation, Xbox",
       "price": 5999,
       "rating": 4.9,
-      "stock": 4,
+      "stock": 3,
       "image": "/images/gta6.jpg"
     },
     {
@@ -574,12 +570,6 @@
       "image": "/images/watchdogs2.jpg"
     }
   ],
-
-
-
-
-
-
   "users": [
     {
       "name": "anshhhiiid",
@@ -594,11 +584,6 @@
       "id": "5-5fw53vNqQ"
     }
   ],
-
-
-
-
-  
   "orders": [
     {
       "userId": "IKAQ3xUmD04",
@@ -1045,9 +1030,131 @@
       "orderStatus": "Pending",
       "createdAt": "2026-11-18T06:47:33.698Z",
       "id": "8h07fLgUUQ4"
+    },
+    {
+      "userId": "5-5fw53vNqQ",
+      "customer": {
+        "name": "Anshid",
+        "email": "anshid123@gmail.com",
+        "phone": "8848305066",
+        "address": "213",
+        "city": "123",
+        "state": "231",
+        "pincode": "321231"
+      },
+      "items": [
+        {
+          "id": "36",
+          "name": "Grand Theft Auto VI",
+          "image": "/images/gta6.jpg",
+          "price": 5999,
+          "quantity": 1,
+          "itemType": "game"
+        },
+        {
+          "id": "1",
+          "name": "PlayStation 5 Slim",
+          "image": "/images/ps5.png",
+          "price": 49999,
+          "quantity": 1,
+          "itemType": "product"
+        }
+      ],
+      "subtotal": 55998,
+      "shipping": 0,
+      "total": 55998,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-18T07:42:10.229Z",
+      "id": "rnBCm3A2iG0"
+    },
+    {
+      "userId": "5-5fw53vNqQ",
+      "customer": {
+        "name": "Anshid",
+        "email": "anshid123@gmail.com",
+        "phone": "8848305066",
+        "address": "dw",
+        "city": "cxv",
+        "state": "cv",
+        "pincode": "132231"
+      },
+      "items": [
+        {
+          "id": "12",
+          "name": "Nintendo Switch 2 Limited Edition",
+          "image": "/images/switch 2lmtd.png",
+          "price": 39999,
+          "quantity": 1,
+          "itemType": "product"
+        }
+      ],
+      "subtotal": 39999,
+      "shipping": 0,
+      "total": 39999,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-18T07:57:15.710Z",
+      "id": "0a-4nsEEKuA"
+    },
+    {
+      "userId": "5-5fw53vNqQ",
+      "customer": {
+        "name": "Anshid",
+        "email": "anshid123@gmail.com",
+        "phone": "8848305066",
+        "address": "sdsd",
+        "city": "sds",
+        "state": "ssd",
+        "pincode": "123231"
+      },
+      "items": [
+        {
+          "id": "15",
+          "name": "ASUS ROG Ally",
+          "image": "/images/ROG_Ally.png",
+          "price": 64999,
+          "quantity": 1,
+          "itemType": "product"
+        }
+      ],
+      "subtotal": 64999,
+      "shipping": 0,
+      "total": 64999,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-18T08:23:10.700Z",
+      "id": "-pwUBjfCt5Q"
     }
   ],
   "carts": [],
-  "wishlists": [],
+  "wishlists": [
+    {
+      "userId": "5-5fw53vNqQ",
+      "items": [
+        {
+          "id": "7",
+          "name": "Xbox One S",
+          "brand": "Microsoft",
+          "category": "Console",
+          "price": 19999,
+          "description": "Compact Xbox One with 4K video streaming and HDR support.",
+          "image": "/images/xbox ones.png",
+          "rating": 4.5,
+          "stock": 9,
+          "specifications": {
+            "processor": "AMD Jaguar 8-core",
+            "storage": "1TB HDD",
+            "resolution": "4K HDR (video)"
+          },
+          "itemType": "product"
+        }
+      ],
+      "id": "YFQVeI1-rGA"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }
