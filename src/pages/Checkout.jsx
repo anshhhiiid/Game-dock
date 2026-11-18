@@ -11,7 +11,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
-import { placeOrder } from "../redux/slices/orderSlice";
+import { placeOrder, clearOrderMessages } from "../redux/slices/orderSlice";
 import { clearCart } from "../redux/slices/cartSlice";
 
 function Checkout() {
@@ -22,11 +22,10 @@ function Checkout() {
 
   const { user } = useSelector((state) => state.auth);
 
-  const cartItems = useSelector(
-    (state) => state.cart.items
-  );
+  const cartItems = useSelector((state) => state.cart.items);
+  const cartLoading = useSelector((state) => state.cart.loading);
 
-  const { loading } = useSelector(
+  const { loading, success: orderSuccess } = useSelector(
     (state) => state.orders
   );
 
@@ -46,20 +45,20 @@ function Checkout() {
     pincode: "",
   });
 
+  // Reset the previous checkout result whenever this page is opened again.
+  useEffect(() => {
+    dispatch(clearOrderMessages());
+  }, [dispatch]);
+
   // REDIRECT WHEN CHECKOUT INITIALLY OPENS
 
   useEffect(() => {
     if (!user) {
       navigate("/login", { replace: true });
-    } else if (cartItems.length === 0) {
+    } else if (!cartLoading && cartItems.length === 0 && !orderSuccess) {
       navigate("/cart", { replace: true });
     }
-
-    // Important:
-    // Do not add cartItems.length to the dependency array.
-    // Otherwise clearing the cart after placing an order
-    // can redirect the user back to the cart.
-  }, [user, navigate]);
+  }, [user, cartLoading, cartItems.length, orderSuccess, navigate]);
 
   // CALCULATE TOTAL
 
@@ -207,7 +206,11 @@ function Checkout() {
       if (placeOrder.fulfilled.match(result)) {
         // CLEAR CART AFTER SUCCESSFUL ORDER
 
-        dispatch(clearCart());
+        try {
+          await dispatch(clearCart()).unwrap();
+        } catch {
+          toast.error("Order was placed, but the cart could not be cleared. Please refresh your cart.");
+        }
 
         toast.success("Order placed successfully!");
 
@@ -233,9 +236,13 @@ function Checkout() {
 
   // PREVENT CHECKOUT CONTENT FROM FLASHING DURING REDIRECT
 
-  if (!user || cartItems.length === 0) {
-    return null;
+  if (!user) return null;
+
+  if (cartLoading) {
+    return <div className="min-h-screen bg-[#100E1B] flex items-center justify-center"><p className="text-purple-400">Loading checkout...</p></div>;
   }
+
+  if (cartItems.length === 0 && !orderSuccess) return null;
 
   return (
     <div className="min-h-screen bg-[#100E1B] text-white px-4 py-10 md:px-8">

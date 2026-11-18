@@ -3,13 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { removeFromWishlist } from "../redux/slices/wishlistSlice";
 import { addToCart } from "../redux/slices/cartSlice";
+import toast from "react-hot-toast";
 
 function Wishlist() {
   const dispatch = useDispatch();
 
-  const wishlistItems = useSelector(
-    (state) => state.wishlist.items
-  );
+  const wishlistItems = useSelector((state) => state.wishlist.items);
+  const wishlistLoading = useSelector((state) => state.wishlist.loading);
+
+  if (wishlistLoading) {
+    return <div className="min-h-screen bg-[#100E1B] flex items-center justify-center text-purple-400">Loading your wishlist...</div>;
+  }
 
   if (wishlistItems.length === 0) {
     return (
@@ -66,14 +70,15 @@ function Wishlist() {
               </p>
 
               <button
-                onClick={() =>
-                  dispatch(
-                    addToCart({
-                      product: item,
-                      itemType: item.itemType,
+                onClick={() => {
+                  dispatch(addToCart({ product: item, itemType: item.itemType }))
+                    .unwrap()
+                    .then(() => {
+                      dispatch(removeFromWishlist({ id: item.id, itemType: item.itemType }));
+                      toast.success("Item moved to cart.");
                     })
-                  )
-                }
+                    .catch((error) => toast.error(error || "Could not move item to cart."));
+                }}
                 className="w-full mt-5 bg-gradient-to-r from-violet-600 to-purple-600 py-3 rounded-xl font-semibold hover:scale-[1.02] transition"
               >
                 Add to Cart

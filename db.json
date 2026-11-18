@@ -73,7 +73,7 @@
       "description": "Microsoft's most powerful console with 4K gaming and fast load times.",
       "image": "/images/xbox-x.png",
       "rating": 4.8,
-      "stock": 14,
+      "stock": 13,
       "specifications": {
         "processor": "AMD Zen 2",
         "storage": "1TB SSD",
@@ -392,6 +392,10 @@
       }
     }
   ],
+
+
+
+
   "games": [
     {
       "id": "26",
@@ -570,6 +574,12 @@
       "image": "/images/watchdogs2.jpg"
     }
   ],
+
+
+
+
+
+
   "users": [
     {
       "name": "anshhhiiid",
@@ -584,6 +594,11 @@
       "id": "5-5fw53vNqQ"
     }
   ],
+
+
+
+
+  
   "orders": [
     {
       "userId": "IKAQ3xUmD04",
@@ -1000,7 +1015,39 @@
       "orderStatus": "Pending",
       "createdAt": "2026-11-16T10:34:08.524Z",
       "id": "FysDvFfpuLc"
+    },
+    {
+      "userId": "5-5fw53vNqQ",
+      "customer": {
+        "name": "Anshid",
+        "email": "anshid123@gmail.com",
+        "phone": "8848305066",
+        "address": "dfdf",
+        "city": "dfdf",
+        "state": "dfdfs",
+        "pincode": "132321"
+      },
+      "items": [
+        {
+          "id": "6",
+          "name": "Xbox Series X",
+          "image": "/images/xbox-x.png",
+          "price": 49999,
+          "quantity": 1,
+          "itemType": "product"
+        }
+      ],
+      "subtotal": 49999,
+      "shipping": 0,
+      "total": 49999,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-18T06:47:33.698Z",
+      "id": "8h07fLgUUQ4"
     }
   ],
+  "carts": [],
+  "wishlists": [],
   "$schema": "./node_modules/json-server/schema.json"
 }

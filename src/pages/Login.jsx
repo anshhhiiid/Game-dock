@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Gamepad2, Eye, EyeOff } from "lucide-react";
 
@@ -8,6 +8,8 @@ import { loginUser } from "../redux/slices/authSlice";
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  
 
   const { loading, error } = useSelector((state) => state.auth);
 
@@ -59,7 +61,7 @@ function Login() {
     );
 
     if (loginUser.fulfilled.match(result)) {
-      navigate("/");
+      navigate(location.state?.from?.pathname || "/", { replace: true });
     }
   };
 

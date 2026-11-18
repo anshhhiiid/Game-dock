@@ -6,6 +6,9 @@ import {
   createOrderService,
   getUserOrdersService,
   getSingleOrderService,
+  getAllOrdersService,
+  updateOrderService,
+  deleteOrderService,
 } from "../../services/orderService";
 
 import { updateProductStock } from "./productSlice";
@@ -147,6 +150,21 @@ export const fetchUserOrders = createAsyncThunk(
   }
 );
 
+// ADMIN / MANAGEMENT: READ ALL ORDERS
+export const fetchAllOrders = createAsyncThunk("orders/fetchAllOrders", async (_, { rejectWithValue }) => {
+  try { return await getAllOrdersService(); } catch (error) { return rejectWithValue(error.response?.data?.message || "Failed to fetch all orders."); }
+});
+
+// UPDATE ORDER (for example: orderStatus or paymentStatus)
+export const updateOrder = createAsyncThunk("orders/updateOrder", async ({ id, updates }, { rejectWithValue }) => {
+  try { return await updateOrderService(id, updates); } catch (error) { return rejectWithValue(error.response?.data?.message || "Failed to update order."); }
+});
+
+// DELETE ORDER
+export const deleteOrder = createAsyncThunk("orders/deleteOrder", async (id, { rejectWithValue }) => {
+  try { await deleteOrderService(id); return id; } catch (error) { return rejectWithValue(error.response?.data?.message || "Failed to delete order."); }
+});
+
 // FETCH SINGLE ORDER
 export const fetchSingleOrder = createAsyncThunk(
   "orders/fetchSingleOrder",
@@ -237,7 +255,12 @@ const orderSlice = createSlice({
       .addCase(fetchSingleOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(fetchAllOrders.pending, (state) => { state.loading = true; state.error = null; })
+      .addCase(fetchAllOrders.fulfilled, (state, action) => { state.loading = false; state.orders = action.payload; })
+      .addCase(fetchAllOrders.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
+      .addCase(updateOrder.fulfilled, (state, action) => { const index = state.orders.findIndex((order) => String(order.id) === String(action.payload.id)); if (index !== -1) state.orders[index] = action.payload; if (String(state.currentOrder?.id) === String(action.payload.id)) state.currentOrder = action.payload; })
+      .addCase(deleteOrder.fulfilled, (state, action) => { state.orders = state.orders.filter((order) => String(order.id) !== String(action.payload)); if (String(state.currentOrder?.id) === String(action.payload)) state.currentOrder = null; });
   },
 });
 

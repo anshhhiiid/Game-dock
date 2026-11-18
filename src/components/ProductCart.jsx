@@ -56,14 +56,10 @@ function ProductCart({ product, itemType = "product" }) {
       return;
     }
 
-    dispatch(
-      addToCart({
-        product,
-        itemType,
-      })
-    );
-
-    toast.success(`${product.name} added to cart!`);
+    dispatch(addToCart({ product, itemType }))
+      .unwrap()
+      .then(() => toast.success(`${product.name} added to cart!`))
+      .catch((error) => toast.error(error || "Could not update your cart."));
   };
 
   // ADD TO WISHLIST
@@ -80,14 +76,10 @@ function ProductCart({ product, itemType = "product" }) {
       return;
     }
 
-    dispatch(
-      addToWishlist({
-        product,
-        itemType,
-      })
-    );
-
-    toast.success(`${product.name} added to wishlist!`);
+    dispatch(addToWishlist({ product, itemType }))
+      .unwrap()
+      .then(() => toast.success(`${product.name} added to wishlist!`))
+      .catch((error) => toast.error(error || "Could not update your wishlist."));
   };
 
   // VIEW DETAILS

@@ -22,6 +22,8 @@ function Cart() {
   const navigate = useNavigate();
 
   const cartItems = useSelector((state) => state.cart.items);
+  
+  const cartLoading = useSelector((state) => state.cart.loading);
 
   const totalItems = cartItems.reduce(
     (total, item) => total + item.quantity,
@@ -46,6 +48,14 @@ function Cart() {
 
   const formatPrice = (price) =>
     `₹${Number(price).toLocaleString("en-IN")}`;
+
+  if (cartLoading) {
+    return <div className="min-h-screen bg-[#100E1B] flex items-center justify-center pt-24"><p className="text-purple-400">Loading your cart...</p></div>;
+  }
+
+  if (cartLoading) {
+    return <div className="min-h-screen bg-[#100E1B] flex items-center justify-center pt-24"><p className="text-purple-400">Loading your cart...</p></div>;
+  }
 
   return (
     <div className="min-h-screen bg-[#100E1B] text-white px-4 md:px-8 py-10">

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api from "../../services/api";
+import { findUserByEmail, createUser } from "../../services/userService";
 
 // REGISTER
 export const registerUser = createAsyncThunk(
@@ -7,13 +7,9 @@ export const registerUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       // Check whether email already exists
-      const response = await api.get("/users", {
-        params: {
-          email: userData.email,
-        },
-      });
+      const existingUser = await findUserByEmail(userData.email);
 
-      if (response.data.length > 0) {
+      if (existingUser) {
         return rejectWithValue("Email is already registered.");
       }
 
@@ -24,9 +20,9 @@ export const registerUser = createAsyncThunk(
         password: userData.password,
       };
 
-      const result = await api.post("/users", newUser);
+      const result = await createUser(newUser);
 
-      return result.data;
+      return result;
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || "Registration failed."
@@ -40,24 +36,19 @@ export const loginUser = createAsyncThunk(
   "auth/login",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await api.get("/users", {
-        params: {
-          email: userData.email,
-        },
-      });
-
-   const user = response.data.find(
-  (user) => user.password === userData.password
-);
+      const foundUser = await findUserByEmail(userData.email);
+      const user = foundUser && foundUser.password === userData.password ? foundUser : null;
 
 if (!user) {
   return rejectWithValue("Invalid email or password.");
 }
 
-// Save user information
-localStorage.setItem("user", JSON.stringify(user));
+// Keep the session profile only; never persist the password in localStorage.
+const safeUser = { ...user };
+delete safeUser.password;
+localStorage.setItem("user", JSON.stringify(safeUser));
 
-return user;
+return safeUser;
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || "Login failed."
@@ -66,11 +57,27 @@ return user;
   }
 );
 
+const getStoredUser = () => {
+  try {
+    const storedUser = JSON.parse(localStorage.getItem("user")) || null;
+    if (storedUser?.password) {
+      const safeUser = { ...storedUser };
+      delete safeUser.password;
+      localStorage.setItem("user", JSON.stringify(safeUser));
+      return safeUser;
+    }
+    return storedUser;
+  } catch {
+    localStorage.removeItem("user");
+    return null;
+  }
+};
+
 const authSlice = createSlice({
   name: "auth",
 
  initialState: {
-  user: JSON.parse(localStorage.getItem("user")) || null,
+  user: getStoredUser(),
   loading: false,
   error: null,
   success: false,

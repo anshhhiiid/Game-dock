@@ -1,24 +1,19 @@
 import api from "./api";
 
-// CREATE NEW ORDER
-export const createOrderService = async (orderData) => {
-  const response = await api.post("/orders", orderData);
-  return response.data;
-};
+export const createOrderService = async (orderData) =>
+  (await api.post("/orders", orderData)).data;
 
-// GET ORDERS OF A USER
-export const getUserOrdersService = async (userId) => {
-  const response = await api.get("/orders", {
-    params: {
-      userId,
-    },
-  });
+export const getUserOrdersService = async (userId) =>
+  (await api.get("/orders", { params: { userId } })).data;
 
-  return response.data;
-};
+export const getSingleOrderService = async (orderId) =>
+  (await api.get(`/orders/${orderId}`)).data;
 
-// GET SINGLE ORDER
-export const getSingleOrderService = async (orderId) => {
-  const response = await api.get(`/orders/${orderId}`);
-  return response.data;
-};
+export const getAllOrdersService = async () =>
+  (await api.get("/orders")).data;
+
+export const updateOrderService = async (orderId, updates) =>
+  (await api.patch(`/orders/${orderId}`, updates)).data;
+
+export const deleteOrderService = async (orderId) =>
+  (await api.delete(`/orders/${orderId}`)).data;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -9,10 +9,13 @@ import { fetchGames } from "../redux/slices/gameSlice";
 
 import { addToCart } from "../redux/slices/cartSlice";
 import { addToWishlist } from "../redux/slices/wishlistSlice";
+import toast from "react-hot-toast";
 
 function ProductDetails() {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
+  const [quantity, setQuantity] = useState(1);
+
 
   const type = searchParams.get("type");
 
@@ -31,9 +34,8 @@ function ProductDetails() {
     (state) => state.auth.user
   );
 
-  const wishlistItems = useSelector(
-    (state) => state.wishlist.items
-  );
+  const wishlistItems = useSelector((state) => state.wishlist.items);
+  const cartItems = useSelector((state) => state.cart.items);
 
   const isGame = type === "game";
 
@@ -45,6 +47,14 @@ function ProductDetails() {
       dispatch(fetchProducts());
     }
   }, [dispatch, isGame]);
+
+  useEffect(() => {
+    setQuantity(1);
+  }, [id, type]);
+
+  useEffect(() => {
+    setQuantity(1);
+  }, [id, type]);
 
   // Find product
   const item = isGame
@@ -71,12 +81,20 @@ function ProductDetails() {
 
     if (!inStock) return;
 
-    dispatch(
-      addToCart({
-        product: item,
-        itemType: isGame ? "game" : "product",
-      })
+    const alreadyInCart = cartItems.some(
+      (cartItem) => String(cartItem.id) === String(item.id) &&
+        cartItem.itemType === (isGame ? "game" : "product")
     );
+
+    if (alreadyInCart) {
+      toast("This item is already in your cart.", { icon: "🛒" });
+      return;
+    }
+
+    dispatch(addToCart({ product: item, itemType: isGame ? "game" : "product", quantity }))
+      .unwrap()
+      .then(() => toast.success(`${quantity} × ${item.name} added to cart.`))
+      .catch((error) => toast.error(error || "Could not update your cart."));
   };
 
   // Add to wishlist
@@ -86,12 +104,10 @@ function ProductDetails() {
       return;
     }
 
-    dispatch(
-      addToWishlist({
-        product: item,
-        itemType: isGame ? "game" : "product",
-      })
-    );
+    dispatch(addToWishlist({ product: item, itemType: isGame ? "game" : "product" }))
+      .unwrap()
+      .then(() => toast.success(`${item.name} added to wishlist.`))
+      .catch((error) => toast.error(error || "Could not update your wishlist."));
   };
 
   // Loading
@@ -211,6 +227,52 @@ function ProductDetails() {
                 </p>
               )}
 
+            </div>
+
+            {/* QUANTITY SELECTION */}
+            <div className="mt-6">
+              <p className="text-sm text-gray-400 mb-2">Quantity</p>
+              <div className="inline-flex items-center bg-[#171426] border border-[#30283F] rounded-lg">
+                <button
+                  type="button"
+                  onClick={() => setQuantity((value) => Math.max(1, value - 1))}
+                  disabled={quantity <= 1}
+                  className="px-4 py-2 text-lg hover:text-purple-400 disabled:opacity-40"
+                  aria-label="Decrease quantity"
+                >−</button>
+                <span className="min-w-10 text-center font-semibold">{quantity}</span>
+                <button
+                  type="button"
+                  onClick={() => setQuantity((value) => Math.min(Number(item.stock) || 1, value + 1))}
+                  disabled={!inStock || quantity >= Number(item.stock)}
+                  className="px-4 py-2 text-lg hover:text-purple-400 disabled:opacity-40"
+                  aria-label="Increase quantity"
+                >+</button>
+              </div>
+              {inStock && <p className="text-xs text-gray-500 mt-2">Maximum {item.stock} per order.</p>}
+            </div>
+
+            {/* QUANTITY SELECTION */}
+            <div className="mt-6">
+              <p className="text-sm text-gray-400 mb-2">Quantity</p>
+              <div className="inline-flex items-center bg-[#171426] border border-[#30283F] rounded-lg">
+                <button
+                  type="button"
+                  onClick={() => setQuantity((value) => Math.max(1, value - 1))}
+                  disabled={quantity <= 1}
+                  className="px-4 py-2 text-lg hover:text-purple-400 disabled:opacity-40"
+                  aria-label="Decrease quantity"
+                >−</button>
+                <span className="min-w-10 text-center font-semibold">{quantity}</span>
+                <button
+                  type="button"
+                  onClick={() => setQuantity((value) => Math.min(Number(item.stock) || 1, value + 1))}
+                  disabled={!inStock || quantity >= Number(item.stock)}
+                  className="px-4 py-2 text-lg hover:text-purple-400 disabled:opacity-40"
+                  aria-label="Increase quantity"
+                >+</button>
+              </div>
+              {inStock && <p className="text-xs text-gray-500 mt-2">Maximum {item.stock} per order.</p>}
             </div>
 
             {/* Description */}
