@@ -15,7 +15,7 @@ function Products() {
   const searchQuery = searchParams.get("search") || "";
   const selectedBrand = searchParams.get("brand") || "";
 
-  // Redux data
+  // REDUX DATA
   const {
     products,
     loading: productsLoading,
@@ -28,11 +28,10 @@ function Products() {
     error: gamesError,
   } = useSelector((state) => state.games);
 
-  // Combined loading and error states
   const loading = productsLoading || gamesLoading;
   const error = productsError || gamesError;
 
-  // Filter states
+  // FILTER STATES
   const [filters, setFilters] = useState({
     brand: selectedBrand ? [selectedBrand] : [],
     category: [],
@@ -43,17 +42,17 @@ function Products() {
   const [rating, setRating] = useState("");
   const [inStock, setInStock] = useState(false);
   const [sort, setSort] = useState("featured");
- 
+
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 8;
 
-  // Fetch consoles and games
+  // FETCH PRODUCTS AND GAMES
   useEffect(() => {
     dispatch(fetchProducts());
     dispatch(fetchGames());
   }, [dispatch]);
 
-  // Update brand filter when URL changes
+  // UPDATE BRAND FILTER
   useEffect(() => {
     setFilters((prev) => ({
       ...prev,
@@ -61,13 +60,13 @@ function Products() {
     }));
   }, [selectedBrand]);
 
-  // Normalize search
+  // NORMALIZE SEARCH
   const normalize = (value) =>
     String(value || "")
       .toLowerCase()
       .replace(/[\s-]+/g, "");
 
-  // Combine consoles and games
+  // COMBINE CONSOLES AND GAMES
   const allProducts = useMemo(() => {
     const consoleItems = products.map((product) => ({
       ...product,
@@ -82,7 +81,7 @@ function Products() {
     return [...consoleItems, ...gameItems];
   }, [products, games]);
 
-  // Available brands from both collections
+  // AVAILABLE BRANDS
   const brands = useMemo(
     () => [
       ...new Set(
@@ -92,7 +91,7 @@ function Products() {
     [allProducts]
   );
 
-  // Available categories from both collections
+  // AVAILABLE CATEGORIES
   const categories = useMemo(
     () => [
       ...new Set(
@@ -102,7 +101,7 @@ function Products() {
     [allProducts]
   );
 
-  // Filter groups
+  // FILTER GROUPS
   const groups = [
     {
       key: "brand",
@@ -116,7 +115,7 @@ function Products() {
     },
   ];
 
-  // Handle brand and category filters
+  // HANDLE FILTER CHANGE
   const handleFilterChange = (key, value) => {
     setFilters((prev) => ({
       ...prev,
@@ -126,7 +125,7 @@ function Products() {
     }));
   };
 
-  // Handle price changes
+  // HANDLE PRICE CHANGE
   const handlePriceChange = (type, value) => {
     if (type === "min") {
       setMinPrice(value);
@@ -135,7 +134,7 @@ function Products() {
     }
   };
 
-  // Clear filters
+  // CLEAR FILTERS
   const clearFilters = () => {
     setFilters({
       brand: [],
@@ -149,11 +148,11 @@ function Products() {
     setSort("featured");
   };
 
-  // Filter and sort consoles + games
+  // FILTER AND SORT PRODUCTS
   const filteredProducts = useMemo(() => {
     let result = [...allProducts];
 
-    // Search filter
+    // SEARCH FILTER
     if (searchQuery.trim()) {
       const search = normalize(searchQuery);
 
@@ -166,49 +165,49 @@ function Products() {
       );
     }
 
-    // Brand filter
+    // BRAND FILTER
     if (filters.brand.length > 0) {
       result = result.filter((item) =>
         filters.brand.includes(item.brand)
       );
     }
 
-    // Category filter
+    // CATEGORY FILTER
     if (filters.category.length > 0) {
       result = result.filter((item) =>
         filters.category.includes(item.category)
       );
     }
 
-    // Minimum price
+    // MINIMUM PRICE
     if (minPrice !== "") {
       result = result.filter(
         (item) => Number(item.price) >= Number(minPrice)
       );
     }
 
-    // Maximum price
+    // MAXIMUM PRICE
     if (maxPrice !== "") {
       result = result.filter(
         (item) => Number(item.price) <= Number(maxPrice)
       );
     }
 
-    // Rating filter
+    // RATING FILTER
     if (rating !== "") {
       result = result.filter(
         (item) => Number(item.rating) >= Number(rating)
       );
     }
 
-    // Stock filter
+    // STOCK FILTER
     if (inStock) {
       result = result.filter(
         (item) => Number(item.stock) > 0
       );
     }
 
-    // Sorting
+    // SORTING
     switch (sort) {
       case "priceLow":
         result.sort(
@@ -250,16 +249,41 @@ function Products() {
     sort,
   ]);
 
-  // Reset pagination whenever the search, filters, or sorting changes.
+  // RESET PAGINATION WHEN FILTERS CHANGE
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, filters, minPrice, maxPrice, rating, inStock, sort]);
+  }, [
+    searchQuery,
+    filters,
+    minPrice,
+    maxPrice,
+    rating,
+    inStock,
+    sort,
+  ]);
 
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  // SCROLL TO TOP WHEN PAGINATION CHANGES
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  }, [currentPage]);
+
+  // PAGINATION
+  const totalPages = Math.ceil(
+    filteredProducts.length / productsPerPage
+  );
+
   const startIndex = (currentPage - 1) * productsPerPage;
-  const paginatedProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
 
-  // Loading
+  const paginatedProducts = filteredProducts.slice(
+    startIndex,
+    startIndex + productsPerPage
+  );
+
+  // LOADING
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#100E1B] pt-28">
@@ -270,7 +294,7 @@ function Products() {
     );
   }
 
-  // Error
+  // ERROR
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#100E1B] pt-28">
@@ -286,7 +310,7 @@ function Products() {
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
 
-        {/* Page Heading */}
+        {/* PAGE HEADING */}
         <div className="mb-8">
 
           <p className="text-purple-400 text-sm font-semibold tracking-widest uppercase mb-2">
@@ -294,9 +318,7 @@ function Products() {
           </p>
 
           <h1 className="text-3xl sm:text-4xl font-bold">
-            {searchQuery
-              ? "Search Results"
-              : "Explore All Products"}
+            {searchQuery ? "Search Results" : "Explore All Products"}
           </h1>
 
           <p className="text-gray-400 mt-3">
@@ -307,7 +329,7 @@ function Products() {
 
         </div>
 
-        {/* Filters */}
+        {/* FILTERS */}
         <div className="flex justify-end mb-6">
 
           <div className="w-full">
@@ -330,20 +352,31 @@ function Products() {
 
         </div>
 
-        {/* Results Count */}
+        {/* RESULTS COUNT */}
         <div className="flex items-center justify-between mb-6">
 
           <p className="text-sm text-gray-400">
             Showing{" "}
             <span className="text-white font-semibold">
-              {filteredProducts.length === 0 ? 0 : startIndex + 1}-{Math.min(startIndex + productsPerPage, filteredProducts.length)}
-            </span>{" of "}
-            <span className="text-white font-semibold">{filteredProducts.length}</span> products
+              {filteredProducts.length === 0
+                ? 0
+                : startIndex + 1}
+              -
+              {Math.min(
+                startIndex + productsPerPage,
+                filteredProducts.length
+              )}
+            </span>{" "}
+            of{" "}
+            <span className="text-white font-semibold">
+              {filteredProducts.length}
+            </span>{" "}
+            products
           </p>
 
         </div>
 
-        {/* Product Grid */}
+        {/* PRODUCT GRID */}
         {filteredProducts.length > 0 ? (
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -381,26 +414,54 @@ function Products() {
 
         )}
 
+        {/* PAGINATION */}
         {totalPages > 1 && (
+
           <div className="flex flex-wrap items-center justify-center gap-2 mt-10">
+
             <button
-              onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+              onClick={() =>
+                setCurrentPage((page) => Math.max(1, page - 1))
+              }
               disabled={currentPage === 1}
               className="px-4 py-2 rounded-lg border border-[#403650] text-gray-300 hover:border-purple-500 disabled:opacity-40 disabled:cursor-not-allowed"
-            >Previous</button>
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+            >
+              Previous
+            </button>
+
+            {Array.from(
+              { length: totalPages },
+              (_, index) => index + 1
+            ).map((page) => (
+
               <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={`w-10 h-10 rounded-lg border transition ${currentPage === page ? "bg-purple-600 border-purple-500 text-white" : "border-[#403650] text-gray-300 hover:border-purple-500"}`}
-              >{page}</button>
+                className={`w-10 h-10 rounded-lg border transition ${
+                  currentPage === page
+                    ? "bg-purple-600 border-purple-500 text-white"
+                    : "border-[#403650] text-gray-300 hover:border-purple-500"
+                }`}
+              >
+                {page}
+              </button>
+
             ))}
+
             <button
-              onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
+              onClick={() =>
+                setCurrentPage((page) =>
+                  Math.min(totalPages, page + 1)
+                )
+              }
               disabled={currentPage === totalPages}
               className="px-4 py-2 rounded-lg border border-[#403650] text-gray-300 hover:border-purple-500 disabled:opacity-40 disabled:cursor-not-allowed"
-            >Next</button>
+            >
+              Next
+            </button>
+
           </div>
+
         )}
 
       </section>

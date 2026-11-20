@@ -23,6 +23,7 @@ import Profile from "./pages/Profile";
 import MyOrders from "./pages/MyOrders";
 import { fetchUserCart, resetCartState } from "./redux/slices/cartSlice";
 import { fetchUserWishlist, resetWishlistState } from "./redux/slices/wishlistSlice";
+import ScrollToTop from "./components/ScrollToTop";
 
 function AppContent() {
   const dispatch = useDispatch();
@@ -44,6 +45,7 @@ function AppContent() {
   return (
     <div className="w-full min-h-screen bg-[#100E1B] text-white">
       <Navbar />
+         <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />

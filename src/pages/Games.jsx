@@ -43,6 +43,7 @@ function Games() {
   const [rating, setRating] = useState("");
   const [inStock, setInStock] = useState(false);
   const [sort, setSort] = useState("featured");
+
   const [currentPage, setCurrentPage] = useState(1);
   const gamesPerPage = 8;
 
@@ -205,13 +206,31 @@ function Games() {
     sort,
   ]);
 
+  // RESET PAGINATION WHEN FILTERS CHANGE
   useEffect(() => {
     setCurrentPage(1);
   }, [filters, minPrice, maxPrice, rating, inStock, sort]);
 
-  const totalPages = Math.ceil(filteredGames.length / gamesPerPage);
+  // SCROLL TO TOP WHEN PAGINATION CHANGES
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  }, [currentPage]);
+
+  // PAGINATION
+  const totalPages = Math.ceil(
+    filteredGames.length / gamesPerPage
+  );
+
   const startIndex = (currentPage - 1) * gamesPerPage;
-  const paginatedGames = filteredGames.slice(startIndex, startIndex + gamesPerPage);
+
+  const paginatedGames = filteredGames.slice(
+    startIndex,
+    startIndex + gamesPerPage
+  );
 
   // VIEW GAME DETAILS
   const handleViewDetails = (game) => {
@@ -248,7 +267,9 @@ function Games() {
     dispatch(addToCart({ product: game, itemType: "game" }))
       .unwrap()
       .then(() => toast.success(`${game.name} added to cart!`))
-      .catch((error) => toast.error(error || "Could not update your cart."));
+      .catch((error) =>
+        toast.error(error || "Could not update your cart.")
+      );
   };
 
   // ADD TO WISHLIST
@@ -274,7 +295,9 @@ function Games() {
     dispatch(addToWishlist({ product: game, itemType: "game" }))
       .unwrap()
       .then(() => toast.success(`${game.name} added to wishlist!`))
-      .catch((error) => toast.error(error || "Could not update your wishlist."));
+      .catch((error) =>
+        toast.error(error || "Could not update your wishlist.")
+      );
   };
 
   // CHECK WISHLIST
@@ -354,9 +377,20 @@ function Games() {
           <p className="text-sm text-gray-400">
             Showing{" "}
             <span className="text-white font-semibold">
-              {filteredGames.length === 0 ? 0 : startIndex + 1}-{Math.min(startIndex + gamesPerPage, filteredGames.length)}
-            </span>{" of "}
-            <span className="text-white font-semibold">{filteredGames.length}</span> games
+              {filteredGames.length === 0
+                ? 0
+                : startIndex + 1}
+              -
+              {Math.min(
+                startIndex + gamesPerPage,
+                filteredGames.length
+              )}
+            </span>{" "}
+            of{" "}
+            <span className="text-white font-semibold">
+              {filteredGames.length}
+            </span>{" "}
+            games
           </p>
         </div>
 
@@ -369,9 +403,7 @@ function Games() {
 
               <div
                 key={game.id}
-                className="bg-[#1A1827] border border-[#292638]
-                rounded-xl overflow-hidden group
-                hover:border-purple-500/60 transition duration-300"
+                className="bg-[#1A1827] border border-[#292638] rounded-xl overflow-hidden group hover:border-purple-500/60 transition duration-300"
               >
 
                 {/* GAME IMAGE */}
@@ -386,17 +418,14 @@ function Games() {
                     <img
                       src={game.image}
                       alt={game.name}
-                      className="block w-full h-full object-contain p-2
-                      group-hover:scale-105 transition duration-500"
+                      className="block w-full h-full object-contain p-2 group-hover:scale-105 transition duration-500"
                     />
                   </button>
 
                   {/* WISHLIST */}
                   <button
                     onClick={() => handleAddToWishlist(game)}
-                    className="absolute top-3 right-3 p-2
-                    bg-black/60 backdrop-blur-sm rounded-full
-                    hover:bg-purple-600 transition"
+                    className="absolute top-3 right-3 p-2 bg-black/60 backdrop-blur-sm rounded-full hover:bg-purple-600 transition"
                     aria-label="Add to wishlist"
                   >
                     <Heart
@@ -408,18 +437,17 @@ function Games() {
                       }
                     />
                   </button>
-{/* STOCK STATUS */}
-{Number(game.stock) <= 0 ? (
-  <div className="absolute top-3 left-3 bg-red-600
-  text-white text-xs px-3 py-1 rounded-full">
-    Out of Stock
-  </div>
-) : Number(game.stock) <= 3 ? (
-  <div className="absolute top-3 left-3 bg-orange-600
-  text-white text-xs px-3 py-1 rounded-full">
-    Only {game.stock} left!
-  </div>
-) : null}
+
+                  {/* STOCK STATUS */}
+                  {Number(game.stock) <= 0 ? (
+                    <div className="absolute top-3 left-3 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
+                      Out of Stock
+                    </div>
+                  ) : Number(game.stock) <= 3 ? (
+                    <div className="absolute top-3 left-3 bg-orange-600 text-white text-xs px-3 py-1 rounded-full">
+                      Only {game.stock} left!
+                    </div>
+                  ) : null}
 
                 </div>
 
@@ -432,9 +460,7 @@ function Games() {
 
                   <button
                     onClick={() => handleViewDetails(game)}
-                    className="text-left text-white font-semibold
-                    text-lg mt-2 line-clamp-1
-                    hover:text-purple-400 transition"
+                    className="text-left text-white font-semibold text-lg mt-2 line-clamp-1 hover:text-purple-400 transition"
                   >
                     {game.name}
                   </button>
@@ -466,11 +492,7 @@ function Games() {
                   <button
                     onClick={() => handleAddToCart(game)}
                     disabled={Number(game.stock) <= 0}
-                    className="w-full mt-4 flex items-center
-                    justify-center gap-2 py-2.5 rounded-lg
-                    bg-purple-600 hover:bg-purple-700
-                    disabled:bg-gray-600 disabled:cursor-not-allowed
-                    text-white text-sm font-semibold transition"
+                    className="w-full mt-4 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white text-sm font-semibold transition"
                   >
                     <ShoppingCart size={17} />
 
@@ -501,8 +523,7 @@ function Games() {
 
             <button
               onClick={clearFilters}
-              className="mt-5 px-5 py-2 bg-purple-600
-              hover:bg-purple-700 rounded-lg transition"
+              className="mt-5 px-5 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition"
             >
               Clear Filters
             </button>
@@ -511,26 +532,54 @@ function Games() {
 
         )}
 
+        {/* PAGINATION */}
         {totalPages > 1 && (
+
           <div className="flex flex-wrap items-center justify-center gap-2 mt-10">
+
             <button
-              onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+              onClick={() =>
+                setCurrentPage((page) => Math.max(1, page - 1))
+              }
               disabled={currentPage === 1}
               className="px-4 py-2 rounded-lg border border-[#403650] text-gray-300 hover:border-purple-500 disabled:opacity-40 disabled:cursor-not-allowed"
-            >Previous</button>
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+            >
+              Previous
+            </button>
+
+            {Array.from(
+              { length: totalPages },
+              (_, index) => index + 1
+            ).map((page) => (
+
               <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={`w-10 h-10 rounded-lg border transition ${currentPage === page ? "bg-purple-600 border-purple-500 text-white" : "border-[#403650] text-gray-300 hover:border-purple-500"}`}
-              >{page}</button>
+                className={`w-10 h-10 rounded-lg border transition ${
+                  currentPage === page
+                    ? "bg-purple-600 border-purple-500 text-white"
+                    : "border-[#403650] text-gray-300 hover:border-purple-500"
+                }`}
+              >
+                {page}
+              </button>
+
             ))}
+
             <button
-              onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
+              onClick={() =>
+                setCurrentPage((page) =>
+                  Math.min(totalPages, page + 1)
+                )
+              }
               disabled={currentPage === totalPages}
               className="px-4 py-2 rounded-lg border border-[#403650] text-gray-300 hover:border-purple-500 disabled:opacity-40 disabled:cursor-not-allowed"
-            >Next</button>
+            >
+              Next
+            </button>
+
           </div>
+
         )}
 
       </section>
