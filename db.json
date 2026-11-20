@@ -1131,30 +1131,6 @@
     }
   ],
   "carts": [],
-  "wishlists": [
-    {
-      "userId": "5-5fw53vNqQ",
-      "items": [
-        {
-          "id": "7",
-          "name": "Xbox One S",
-          "brand": "Microsoft",
-          "category": "Console",
-          "price": 19999,
-          "description": "Compact Xbox One with 4K video streaming and HDR support.",
-          "image": "/images/xbox ones.png",
-          "rating": 4.5,
-          "stock": 9,
-          "specifications": {
-            "processor": "AMD Jaguar 8-core",
-            "storage": "1TB HDD",
-            "resolution": "4K HDR (video)"
-          },
-          "itemType": "product"
-        }
-      ],
-      "id": "YFQVeI1-rGA"
-    }
-  ],
+  "wishlists": [],
   "$schema": "./node_modules/json-server/schema.json"
 }

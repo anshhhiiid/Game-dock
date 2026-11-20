@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   ShoppingBag,
   Trash2,
@@ -17,12 +18,13 @@ import {
   clearCart,
 } from "../redux/slices/cartSlice";
 
+import toast from "react-hot-toast";
+
 function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const cartItems = useSelector((state) => state.cart.items);
-  
   const cartLoading = useSelector((state) => state.cart.loading);
 
   const totalItems = cartItems.reduce(
@@ -46,26 +48,49 @@ function Cart() {
     navigate("/checkout");
   };
 
+  // Remove item from cart with toast notification
+  const handleRemoveFromCart = (item) => {
+    dispatch(
+      removeFromCart({
+        id: item.id,
+        itemType: item.itemType,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        toast.success(`${item.name} removed from cart!`);
+      })
+      .catch((error) => {
+        toast.error(error || "Could not remove item from cart.");
+      });
+  };
+
   const formatPrice = (price) =>
     `₹${Number(price).toLocaleString("en-IN")}`;
 
   if (cartLoading) {
-    return <div className="min-h-screen bg-[#100E1B] flex items-center justify-center pt-24"><p className="text-purple-400">Loading your cart...</p></div>;
+    return (
+      <div className="min-h-screen bg-[#100E1B] flex items-center justify-center pt-24">
+        <p className="text-purple-400">Loading your cart...</p>
+      </div>
+    );
   }
 
   if (cartLoading) {
-    return <div className="min-h-screen bg-[#100E1B] flex items-center justify-center pt-24"><p className="text-purple-400">Loading your cart...</p></div>;
+    return (
+      <div className="min-h-screen bg-[#100E1B] flex items-center justify-center pt-24">
+        <p className="text-purple-400">Loading your cart...</p>
+      </div>
+    );
   }
 
   return (
     <div className="min-h-screen bg-[#100E1B] text-white px-4 md:px-8 py-10">
-
       <div className="max-w-7xl mx-auto">
 
         {/* HEADER */}
 
         <div className="flex items-center gap-3 mb-8">
-
           <ShoppingBag size={30} className="text-purple-500" />
 
           <div>
@@ -75,7 +100,6 @@ function Cart() {
               {totalItems} {totalItems === 1 ? "item" : "items"} in your cart
             </p>
           </div>
-
         </div>
 
         {cartItems.length === 0 ? (
@@ -83,7 +107,6 @@ function Cart() {
           /* EMPTY CART */
 
           <div className="bg-[#171426] border border-[#30283F] rounded-2xl p-10 text-center">
-
             <ShoppingCart
               size={65}
               className="mx-auto text-gray-500 mb-5"
@@ -103,7 +126,6 @@ function Cart() {
             >
               Continue Shopping
             </button>
-
           </div>
 
         ) : (
@@ -115,11 +137,9 @@ function Cart() {
             <div className="lg:col-span-2 space-y-5">
 
               {cartItems.map((item) => {
-
                 const stock = Number(item.stock) || 0;
 
                 return (
-
                   <div
                     key={`${item.itemType}-${item.id}`}
                     className="bg-[#171426] border border-[#30283F] rounded-2xl p-5 flex flex-col sm:flex-row gap-5"
@@ -128,13 +148,11 @@ function Cart() {
                     {/* IMAGE */}
 
                     <div className="w-full sm:w-36 h-36 bg-[#211D31] rounded-xl flex items-center justify-center p-3">
-
                       <img
                         src={item.image}
                         alt={item.name}
                         className="w-full h-full object-contain"
                       />
-
                     </div>
 
                     {/* PRODUCT DETAILS */}
@@ -144,7 +162,6 @@ function Cart() {
                       <div className="flex justify-between gap-3">
 
                         <div>
-
                           <p className="text-purple-400 text-sm mb-1">
                             {item.brand || item.category || item.itemType}
                           </p>
@@ -156,18 +173,10 @@ function Cart() {
                           <p className="text-gray-400 text-sm mt-2">
                             {formatPrice(item.price)}
                           </p>
-
                         </div>
 
                         <button
-                          onClick={() =>
-                            dispatch(
-                              removeFromCart({
-                                id: item.id,
-                                itemType: item.itemType,
-                              })
-                            )
-                          }
+                          onClick={() => handleRemoveFromCart(item)}
                           className="text-gray-400 hover:text-red-500 transition h-fit"
                           title="Remove item"
                         >
@@ -219,7 +228,6 @@ function Cart() {
                         </div>
 
                         <div className="text-right">
-
                           <p className="text-gray-400 text-xs">
                             Subtotal
                           </p>
@@ -227,7 +235,6 @@ function Cart() {
                           <p className="text-lg font-bold text-purple-400">
                             {formatPrice(Number(item.price) * item.quantity)}
                           </p>
-
                         </div>
 
                       </div>
@@ -245,11 +252,8 @@ function Cart() {
                       )}
 
                     </div>
-
                   </div>
-
                 );
-
               })}
 
               {/* CONTINUE SHOPPING */}
@@ -287,7 +291,6 @@ function Cart() {
                   </div>
 
                   <div className="border-t border-[#30283F] pt-4 flex justify-between">
-
                     <span className="font-semibold text-base">
                       Total
                     </span>
@@ -295,7 +298,6 @@ function Cart() {
                     <span className="text-xl font-bold text-purple-400">
                       {formatPrice(total)}
                     </span>
-
                   </div>
 
                 </div>
@@ -332,7 +334,6 @@ function Cart() {
         )}
 
       </div>
-
     </div>
   );
 }

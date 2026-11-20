@@ -11,8 +11,29 @@ function Wishlist() {
   const wishlistItems = useSelector((state) => state.wishlist.items);
   const wishlistLoading = useSelector((state) => state.wishlist.loading);
 
+  // Remove item from wishlist with toast notification
+  const handleRemoveFromWishlist = (item) => {
+    dispatch(
+      removeFromWishlist({
+        id: item.id,
+        itemType: item.itemType,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        toast.success(`${item.name} removed from wishlist!`);
+      })
+      .catch((error) => {
+        toast.error(error || "Could not remove item from wishlist.");
+      });
+  };
+
   if (wishlistLoading) {
-    return <div className="min-h-screen bg-[#100E1B] flex items-center justify-center text-purple-400">Loading your wishlist...</div>;
+    return (
+      <div className="min-h-screen bg-[#100E1B] flex items-center justify-center text-purple-400">
+        Loading your wishlist...
+      </div>
+    );
   }
 
   if (wishlistItems.length === 0) {
@@ -85,14 +106,7 @@ function Wishlist() {
               </button>
 
               <button
-                onClick={() =>
-                  dispatch(
-                    removeFromWishlist({
-                      id: item.id,
-                      itemType: item.itemType,
-                    })
-                  )
-                }
+                onClick={() => handleRemoveFromWishlist(item)}
                 className="w-full mt-3 border border-red-500/40 text-red-400 py-3 rounded-xl hover:bg-red-500/10 transition"
               >
                 Remove
