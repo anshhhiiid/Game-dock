@@ -3,15 +3,23 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Gamepad2, Eye, EyeOff } from "lucide-react";
 
-import { loginUser } from "../redux/slices/authSlice";
+import { loginUser, logout } from "../redux/slices/authSlice";
+import { adminLogin, adminLogout } from "../redux/slices/adminAuthSlice";
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  
 
-  const { loading, error } = useSelector((state) => state.auth);
+  const { loading: userLoading, error } = useSelector(
+    (state) => state.auth
+  );
+
+  const { loading: adminLoading } = useSelector(
+    (state) => state.adminAuth
+  );
+
+  const loading = userLoading || adminLoading;
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -53,15 +61,35 @@ function Login() {
 
     if (Object.keys(newErrors).length > 0) return;
 
-    const result = await dispatch(
-      loginUser({
-        email: formData.email.trim().toLowerCase(),
-        password: formData.password,
-      })
-    );
+    const credentials = {
+      email: formData.email.trim().toLowerCase(),
+      password: formData.password,
+    };
 
-    if (loginUser.fulfilled.match(result)) {
-      navigate(location.state?.from?.pathname || "/", { replace: true });
+    // STEP 1: Check admin credentials first
+    const adminResult = await dispatch(adminLogin(credentials));
+
+    if (adminLogin.fulfilled.match(adminResult)) {
+      // Remove any existing customer session
+      dispatch(logout());
+
+      // Redirect admin
+      navigate("/admin/dashboard", { replace: true });
+
+      return;
+    }
+
+    // STEP 2: If not admin, check normal user credentials
+    const userResult = await dispatch(loginUser(credentials));
+
+    if (loginUser.fulfilled.match(userResult)) {
+      // Remove any existing admin session
+      dispatch(adminLogout());
+
+      // Redirect normal user
+      navigate(location.state?.from?.pathname || "/", {
+        replace: true,
+      });
     }
   };
 
@@ -109,7 +137,9 @@ function Login() {
             />
 
             {errors.email && (
-              <p className="text-red-400 text-xs mt-2">{errors.email}</p>
+              <p className="text-red-400 text-xs mt-2">
+                {errors.email}
+              </p>
             )}
           </div>
 
@@ -135,27 +165,36 @@ function Login() {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
               >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                {showPassword ? (
+                  <EyeOff size={18} />
+                ) : (
+                  <Eye size={18} />
+                )}
               </button>
 
             </div>
 
             {errors.password && (
-              <p className="text-red-400 text-xs mt-2">{errors.password}</p>
+              <p className="text-red-400 text-xs mt-2">
+                {errors.password}
+              </p>
             )}
           </div>
 
-          {/* Server Error */}
+          {/* Login Error */}
           {error && (
-            <p className="text-red-400 text-sm text-center">{error}</p>
+            <p className="text-red-400 text-sm text-center">
+              {error}
+            </p>
           )}
 
+          {/* Login Button */}
           <button
             type="submit"
             disabled={loading}
             className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-900 text-white font-semibold py-3 rounded-lg transition"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Checking credentials..." : "Login"}
           </button>
 
         </form>
@@ -163,7 +202,10 @@ function Login() {
         <p className="text-center text-gray-400 text-sm mt-7">
           Don't have an account?
 
-          <Link to="/register" className="text-purple-400 ml-2 hover:text-purple-300">
+          <Link
+            to="/register"
+            className="text-purple-400 ml-2 hover:text-purple-300"
+          >
             Register
           </Link>
         </p>

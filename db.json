@@ -9,7 +9,7 @@
       "description": "Next-generation gaming console with powerful performance.",
       "image": "/images/ps5.png",
       "rating": 4.9,
-      "stock": 9,
+      "stock": 8,
       "specifications": {
         "processor": "AMD Zen 2",
         "storage": "1TB SSD",
@@ -73,7 +73,7 @@
       "description": "Microsoft's most powerful console with 4K gaming and fast load times.",
       "image": "/images/xbox-x.png",
       "rating": 4.8,
-      "stock": 13,
+      "stock": 11,
       "specifications": {
         "processor": "AMD Zen 2",
         "storage": "1TB SSD",
@@ -489,7 +489,7 @@
       "platform": "Xbox, PC",
       "price": 4499,
       "rating": 4.8,
-      "stock": 11,
+      "stock": 10,
       "image": "/images/forza6.jpg"
     },
     {
@@ -511,7 +511,7 @@
       "platform": "PlayStation, Xbox",
       "price": 5999,
       "rating": 4.9,
-      "stock": 3,
+      "stock": 2,
       "image": "/images/gta6.jpg"
     },
     {
@@ -566,7 +566,7 @@
       "platform": "PlayStation, Xbox, PC",
       "price": 1499,
       "rating": 4.1,
-      "stock": 9,
+      "stock": 8,
       "image": "/images/watchdogs2.jpg"
     }
   ],
@@ -582,6 +582,12 @@
       "email": "anshid123@gmail.com",
       "password": "Anshid10",
       "id": "5-5fw53vNqQ"
+    },
+    {
+      "name": "Anshid",
+      "email": "anshid567@gmail.com",
+      "password": "Anshid10",
+      "id": "er7JC8dUrHg"
     }
   ],
   "orders": [
@@ -1128,34 +1134,110 @@
       "orderStatus": "Pending",
       "createdAt": "2026-11-18T08:23:10.700Z",
       "id": "-pwUBjfCt5Q"
-    }
-  ],
-  "carts": [
+    },
     {
       "userId": "5-5fw53vNqQ",
+      "customer": {
+        "name": "Anshid",
+        "email": "anshid123@gmail.com",
+        "phone": "8848305066",
+        "address": "sdqwdsq",
+        "city": "weded",
+        "state": "edwedw",
+        "pincode": "213231"
+      },
       "items": [
         {
-          "id": "7",
-          "name": "Xbox One S",
-          "brand": "Microsoft",
-          "category": "Console",
-          "price": 19999,
-          "description": "Compact Xbox One with 4K video streaming and HDR support.",
-          "image": "/images/xbox ones.png",
-          "rating": 4.5,
-          "stock": 9,
-          "specifications": {
-            "processor": "AMD Jaguar 8-core",
-            "storage": "1TB HDD",
-            "resolution": "4K HDR (video)"
-          },
-          "itemType": "product",
-          "quantity": 1
+          "id": "6",
+          "name": "Xbox Series X",
+          "image": "/images/xbox-x.png",
+          "price": 49999,
+          "quantity": 1,
+          "itemType": "product"
         }
       ],
-      "id": "XW4MUntDKaE"
+      "subtotal": 49999,
+      "shipping": 0,
+      "total": 49999,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-20T08:39:52.597Z",
+      "id": "OK0zsL7LtV8"
+    },
+    {
+      "userId": "er7JC8dUrHg",
+      "customer": {
+        "name": "Anshid",
+        "email": "anshid567@gmail.com",
+        "phone": "8848305066",
+        "address": "DDWQQW",
+        "city": "WSSW",
+        "state": "WQA",
+        "pincode": "312231"
+      },
+      "items": [
+        {
+          "id": "36",
+          "name": "Grand Theft Auto VI",
+          "image": "/images/gta6.jpg",
+          "price": 5999,
+          "quantity": 1,
+          "itemType": "game"
+        },
+        {
+          "id": "34",
+          "name": "Forza Horizon 6 Premium Edition",
+          "image": "/images/forza6.jpg",
+          "price": 4499,
+          "quantity": 1,
+          "itemType": "game"
+        },
+        {
+          "id": "441",
+          "name": "Watch Dogs 2",
+          "image": "/images/watchdogs2.jpg",
+          "price": 1499,
+          "quantity": 1,
+          "itemType": "game"
+        },
+        {
+          "id": "1",
+          "name": "PlayStation 5 Slim",
+          "image": "/images/ps5.png",
+          "price": 49999,
+          "quantity": 1,
+          "itemType": "product"
+        },
+        {
+          "id": "6",
+          "name": "Xbox Series X",
+          "image": "/images/xbox-x.png",
+          "price": 49999,
+          "quantity": 1,
+          "itemType": "product"
+        }
+      ],
+      "subtotal": 111995,
+      "shipping": 0,
+      "total": 111995,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-20T10:52:07.911Z",
+      "id": "d-vvbtBzidc"
     }
   ],
+  "carts": [],
   "wishlists": [],
+
+  "admins": [
+  {
+    "id": "1",
+    "email": "admin@gamedock.com",
+    "password": "Admin@123",
+    "name": "GAME DOCK Admin"
+  }
+],
   "$schema": "./node_modules/json-server/schema.json"
 }
