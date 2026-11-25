@@ -6,6 +6,7 @@ import {
   fetchAdminOrders,
   fetchAdminOrderDetails,
   clearSelectedOrder,
+  changeAdminOrderStatus,
 } from "../../../redux/slices/adminSlice";
 
 import {
@@ -16,6 +17,14 @@ import {
   MapPin,
   CreditCard,
 } from "lucide-react";
+
+const ORDER_STATUSES = [
+  "Pending",
+  "Processing",
+  "Shipped",
+  "Delivered",
+  "Cancelled",
+];
 
 const AdminOrders = () => {
   const dispatch = useDispatch();
@@ -29,8 +38,13 @@ const AdminOrders = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [showDetails, setShowDetails] = useState(false);
+  const [updatingOrderId, setUpdatingOrderId] = useState(null);
 
   const itemsPerPage = 8;
+
+  // ==============================
+  // FETCH ORDERS
+  // ==============================
 
   useEffect(() => {
     dispatch(fetchAdminOrders());
@@ -39,6 +53,10 @@ const AdminOrders = () => {
       dispatch(clearSelectedOrder());
     };
   }, [dispatch]);
+
+  // ==============================
+  // SEARCH ORDERS
+  // ==============================
 
   const filteredOrders = useMemo(() => {
     return orders.filter((order) => {
@@ -52,6 +70,10 @@ const AdminOrders = () => {
     });
   }, [orders, search]);
 
+  // ==============================
+  // PAGINATION
+  // ==============================
+
   const totalPages = Math.ceil(
     filteredOrders.length / itemsPerPage
   );
@@ -60,6 +82,10 @@ const AdminOrders = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  // ==============================
+  // VIEW ORDER DETAILS
+  // ==============================
 
   const handleViewDetails = async (id) => {
     try {
@@ -71,10 +97,63 @@ const AdminOrders = () => {
     }
   };
 
+  // ==============================
+  // CLOSE MODAL
+  // ==============================
+
   const closeDetails = () => {
     setShowDetails(false);
     dispatch(clearSelectedOrder());
   };
+
+  // ==============================
+  // UPDATE ORDER STATUS
+  // ==============================
+
+  const handleStatusChange = async (id, newStatus) => {
+    try {
+      setUpdatingOrderId(id);
+
+      // STEP 1: Update order in JSON Server
+      const updatedOrder = await dispatch(
+        changeAdminOrderStatus({
+          id,
+          orderStatus: newStatus,
+        })
+      ).unwrap();
+
+      // STEP 2: Refresh latest orders from JSON Server
+      await dispatch(fetchAdminOrders()).unwrap();
+
+      // STEP 3: Refresh modal details if it is open
+      if (
+        showDetails &&
+        String(selectedOrder?.id) === String(id)
+      ) {
+        await dispatch(fetchAdminOrderDetails(id)).unwrap();
+      }
+
+      toast.success(
+        `Order #${id} updated to ${updatedOrder.orderStatus}`
+      );
+
+    } catch (error) {
+      console.error("Order status update error:", error);
+
+      toast.error(
+        typeof error === "string"
+          ? error
+          : "Unable to update order status"
+      );
+
+    } finally {
+      setUpdatingOrderId(null);
+    }
+  };
+
+  // ==============================
+  // STATUS COLORS
+  // ==============================
 
   const getStatusStyle = (status) => {
     switch (status?.toLowerCase()) {
@@ -87,10 +166,44 @@ const AdminOrders = () => {
       case "shipped":
         return "bg-blue-500/10 text-blue-400";
 
+      case "processing":
+        return "bg-purple-500/10 text-purple-400";
+
       default:
         return "bg-yellow-500/10 text-yellow-400";
     }
   };
+
+  // ==============================
+  // STATUS DROPDOWN
+  // ==============================
+
+  const StatusSelect = ({ order }) => (
+    <select
+      value={order.orderStatus || "Pending"}
+      disabled={String(updatingOrderId) === String(order.id)}
+      onChange={(e) =>
+        handleStatusChange(order.id, e.target.value)
+      }
+      className={`rounded-lg border border-gray-700 bg-[#0d121d] px-3 py-2 text-xs outline-none focus:border-purple-500 disabled:opacity-50 ${
+        getStatusStyle(order.orderStatus)
+      }`}
+    >
+      {ORDER_STATUSES.map((status) => (
+        <option
+          key={status}
+          value={status}
+          className="bg-[#151b27] text-white"
+        >
+          {status}
+        </option>
+      ))}
+    </select>
+  );
+
+  // ==============================
+  // UI
+  // ==============================
 
   return (
     <div className="p-5 md:p-8 text-white">
@@ -98,7 +211,6 @@ const AdminOrders = () => {
       {/* HEADER */}
 
       <div className="mb-8">
-
         <h1 className="text-3xl font-bold">
           Orders
         </h1>
@@ -106,7 +218,6 @@ const AdminOrders = () => {
         <p className="text-gray-400 mt-2">
           View and manage customer orders.
         </p>
-
       </div>
 
       {/* ORDER COUNT */}
@@ -170,20 +281,18 @@ const AdminOrders = () => {
 
           <div className="overflow-x-auto">
 
-            <table className="w-full min-w-[850px] text-left">
+            <table className="w-full min-w-[1050px] text-left">
 
               <thead className="bg-[#0d121d] text-gray-400 text-sm">
-
                 <tr>
                   <th className="p-4">Order ID</th>
                   <th className="p-4">Customer</th>
                   <th className="p-4">Items</th>
                   <th className="p-4">Total</th>
                   <th className="p-4">Payment</th>
-                  <th className="p-4">Status</th>
+                  <th className="p-4">Order Status</th>
                   <th className="p-4">Action</th>
                 </tr>
-
               </thead>
 
               <tbody>
@@ -214,7 +323,8 @@ const AdminOrders = () => {
                     </td>
 
                     <td className="p-4 font-medium">
-                      ₹{Number(order.total || 0).toLocaleString("en-IN")}
+                      ₹
+                      {Number(order.total || 0).toLocaleString("en-IN")}
                     </td>
 
                     <td className="p-4 text-sm">
@@ -222,17 +332,10 @@ const AdminOrders = () => {
                     </td>
 
                     <td className="p-4">
-
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs ${getStatusStyle(order.orderStatus)}`}
-                      >
-                        {order.orderStatus || "Pending"}
-                      </span>
-
+                      <StatusSelect order={order} />
                     </td>
 
                     <td className="p-4">
-
                       <button
                         onClick={() => handleViewDetails(order.id)}
                         className="flex items-center gap-2 text-blue-400 hover:text-blue-300"
@@ -240,7 +343,6 @@ const AdminOrders = () => {
                         <Eye size={18} />
                         View
                       </button>
-
                     </td>
 
                   </tr>
@@ -351,6 +453,7 @@ const AdminOrders = () => {
 
                 <p className="sm:col-span-2">
                   <span className="text-gray-400">Address: </span>
+
                   {[
                     selectedOrder.customer?.address,
                     selectedOrder.customer?.city,
@@ -359,6 +462,7 @@ const AdminOrders = () => {
                   ]
                     .filter(Boolean)
                     .join(", ") || "N/A"}
+
                 </p>
 
               </div>
@@ -389,7 +493,6 @@ const AdminOrders = () => {
                     />
 
                     <div className="flex-1">
-
                       <h4 className="font-medium">
                         {item.name}
                       </h4>
@@ -401,11 +504,11 @@ const AdminOrders = () => {
                       <p className="text-gray-400 text-sm">
                         Quantity: {item.quantity}
                       </p>
-
                     </div>
 
                     <p className="font-semibold">
-                      ₹{(
+                      ₹
+                      {(
                         Number(item.price || 0) *
                         Number(item.quantity || 0)
                       ).toLocaleString("en-IN")}
@@ -434,7 +537,8 @@ const AdminOrders = () => {
                   <span className="text-gray-400">Subtotal</span>
 
                   <span>
-                    ₹{Number(selectedOrder.subtotal || 0).toLocaleString("en-IN")}
+                    ₹
+                    {Number(selectedOrder.subtotal || 0).toLocaleString("en-IN")}
                   </span>
                 </div>
 
@@ -442,7 +546,8 @@ const AdminOrders = () => {
                   <span className="text-gray-400">Shipping</span>
 
                   <span>
-                    ₹{Number(selectedOrder.shipping || 0).toLocaleString("en-IN")}
+                    ₹
+                    {Number(selectedOrder.shipping || 0).toLocaleString("en-IN")}
                   </span>
                 </div>
 
@@ -450,7 +555,8 @@ const AdminOrders = () => {
                   <span>Total</span>
 
                   <span className="text-red-400">
-                    ₹{Number(selectedOrder.total || 0).toLocaleString("en-IN")}
+                    ₹
+                    {Number(selectedOrder.total || 0).toLocaleString("en-IN")}
                   </span>
                 </div>
 
@@ -470,12 +576,14 @@ const AdminOrders = () => {
                   </span>
                 </div>
 
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Order Status</span>
+                <div className="flex justify-between items-center gap-4 border-t border-gray-700 pt-3">
 
-                  <span>
-                    {selectedOrder.orderStatus || "Pending"}
+                  <span className="text-gray-400">
+                    Order Status
                   </span>
+
+                  <StatusSelect order={selectedOrder} />
+
                 </div>
 
                 <div className="flex justify-between">

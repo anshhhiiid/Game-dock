@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function ProtectedRoute({ children }) {
@@ -6,10 +6,17 @@ function ProtectedRoute({ children }) {
   const location = useLocation();
 
   if (!user) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
+    return (
+      <Navigate
+        to="/login"
+        replace
+        state={{ from: location }}
+      />
+    );
   }
 
-  return children;
+  // Supports both nested routes and children-based routes
+  return children || <Outlet />;
 }
 
 export default ProtectedRoute;

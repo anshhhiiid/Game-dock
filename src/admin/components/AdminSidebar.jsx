@@ -23,7 +23,7 @@ function AdminSidebar() {
       icon: LayoutDashboard,
     },
     {
-      name: "Products",
+      name: "Products & Games",
       path: "/admin/products",
       icon: Package,
     },
@@ -39,13 +39,18 @@ function AdminSidebar() {
     },
   ];
 
+  // ADMIN LOGOUT
   const handleLogout = () => {
     dispatch(adminLogout());
-    navigate("/admin/login");
+
+    // Redirect to common user/admin login page
+    navigate("/login", { replace: true });
   };
 
   return (
     <aside className="fixed left-0 top-0 z-40 flex h-screen w-64 flex-col border-r border-white/10 bg-[#11111b] p-5 text-white">
+
+      {/* LOGO */}
 
       <div className="mb-10 flex items-center gap-3">
         <Gamepad2 className="text-purple-500" size={32} />
@@ -60,6 +65,8 @@ function AdminSidebar() {
           </p>
         </div>
       </div>
+
+      {/* NAVIGATION LINKS */}
 
       <nav className="flex-1 space-y-2">
         {links.map((link) => {
@@ -84,13 +91,16 @@ function AdminSidebar() {
         })}
       </nav>
 
+      {/* LOGOUT */}
+
       <button
         onClick={handleLogout}
-        className="flex items-center gap-3 rounded-lg px-4 py-3 text-red-400 hover:bg-red-500/10"
+        className="flex items-center gap-3 rounded-lg px-4 py-3 text-red-400 hover:bg-red-500/10 transition"
       >
         <LogOut size={20} />
         Logout
       </button>
+
     </aside>
   );
 }

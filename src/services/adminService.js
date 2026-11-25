@@ -7,7 +7,10 @@ const API = axios.create({
   },
 });
 
-// Admin login
+// ==============================
+// ADMIN LOGIN
+// ==============================
+
 export const adminLoginAPI = async (credentials) => {
   const response = await API.get(
     `/admins?email=${encodeURIComponent(credentials.email)}`
@@ -26,7 +29,10 @@ export const adminLoginAPI = async (credentials) => {
   return safeAdmin;
 };
 
-// Products
+// ==============================
+// PRODUCTS
+// ==============================
+
 export const getAdminProducts = async () => {
   const response = await API.get("/products");
   return response.data;
@@ -47,7 +53,34 @@ export const deleteProduct = async (id) => {
   return id;
 };
 
-// Users
+// ==============================
+// GAMES
+// ==============================
+
+export const getAdminGames = async () => {
+  const response = await API.get("/games");
+  return response.data;
+};
+
+export const createGame = async (game) => {
+  const response = await API.post("/games", game);
+  return response.data;
+};
+
+export const updateGame = async ({ id, game }) => {
+  const response = await API.patch(`/games/${id}`, game);
+  return response.data;
+};
+
+export const deleteGame = async (id) => {
+  await API.delete(`/games/${id}`);
+  return id;
+};
+
+// ==============================
+// USERS
+// ==============================
+
 export const getAdminUsers = async () => {
   const response = await API.get("/users");
   return response.data;
@@ -61,7 +94,10 @@ export const updateUserStatus = async ({ id, isBlocked }) => {
   return response.data;
 };
 
-// Orders
+// ==============================
+// ORDERS
+// ==============================
+
 export const getAdminOrders = async () => {
   const response = await API.get("/orders");
   return response.data;
@@ -69,6 +105,20 @@ export const getAdminOrders = async () => {
 
 export const getAdminOrderDetails = async (id) => {
   const response = await API.get(`/orders/${id}`);
+  return response.data;
+};
+
+// UPDATE ORDER AND PAYMENT STATUS
+export const updateAdminOrderStatus = async ({
+  id,
+  orderStatus,
+  paymentStatus,
+}) => {
+  const response = await API.patch(`/orders/${id}`, {
+    orderStatus,
+    paymentStatus,
+  });
+
   return response.data;
 };
 

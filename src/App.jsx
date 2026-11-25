@@ -1,5 +1,13 @@
 import { useEffect } from "react";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
+
 import { useDispatch, useSelector } from "react-redux";
 import { Toaster } from "react-hot-toast";
 
@@ -36,9 +44,7 @@ import {
   resetWishlistState,
 } from "./redux/slices/wishlistSlice";
 
-
 // Admin Pages
-import AdminLogin from "./admin/components/pages/AdminLogin.jsx";
 import Dashboard from "./admin/components/pages/Dashboard.jsx";
 import AdminProducts from "./admin/components/pages/AdminProducts.jsx";
 import AdminUsers from "./admin/components/pages/AdminUsers.jsx";
@@ -48,17 +54,22 @@ import AdminOrders from "./admin/components/pages/AdminOrders.jsx";
 import AdminLayout from "./admin/components/AdminLayout";
 import AdminProtectedRoute from "./admin/components/AdminProtectedRoute";
 
+// ==============================
+// APP CONTENT
+// ==============================
 
 function AppContent() {
-
   const location = useLocation();
-
-const isAdminRoute = location.pathname.startsWith("/admin");
   const dispatch = useDispatch();
+
+  const isAdminRoute = location.pathname.startsWith("/admin");
 
   const user = useSelector((state) => state.auth.user);
 
-  // Fetch cart and wishlist when user changes
+  // ==============================
+  // FETCH USER CART AND WISHLIST
+  // ==============================
+
   useEffect(() => {
     if (user?.id) {
       dispatch(resetCartState());
@@ -72,17 +83,27 @@ const isAdminRoute = location.pathname.startsWith("/admin");
     }
   }, [user?.id, dispatch]);
 
+  // ==============================
+  // UI
+  // ==============================
+
   return (
     <div className="min-h-screen flex flex-col">
 
-{!isAdminRoute && <Navbar />}
+      {/* USER NAVBAR */}
 
-<ScrollToTop />
+      {!isAdminRoute && <Navbar />}
 
-<main className="flex-grow">
+      <ScrollToTop />
+
+      <main className="flex-grow">
+
         <Routes>
 
-          {/* User Routes */}
+          {/* ============================== */}
+          {/* USER ROUTES */}
+          {/* ============================== */}
+
           <Route path="/" element={<Home />} />
 
           <Route path="/products" element={<Products />} />
@@ -96,7 +117,10 @@ const isAdminRoute = location.pathname.startsWith("/admin");
             element={<ProductDetails />}
           />
 
-          {/* Protected User Routes */}
+          {/* ============================== */}
+          {/* PROTECTED USER ROUTES */}
+          {/* ============================== */}
+
           <Route element={<ProtectedRoute />}>
 
             <Route path="/cart" element={<Cart />} />
@@ -116,24 +140,33 @@ const isAdminRoute = location.pathname.startsWith("/admin");
 
           </Route>
 
-          {/* Authentication Routes */}
+          {/* ============================== */}
+          {/* COMMON AUTHENTICATION */}
+          {/* ============================== */}
+
           <Route path="/login" element={<Login />} />
 
           <Route path="/register" element={<Register />} />
 
-          {/* Other Pages */}
+          {/* Redirect old admin login URL to common login */}
+
+          <Route
+            path="/admin/login"
+            element={<Navigate to="/login" replace />}
+          />
+
+          {/* ============================== */}
+          {/* OTHER USER PAGES */}
+          {/* ============================== */}
+
           <Route path="/about" element={<About />} />
 
           <Route path="/contact" element={<Contact />} />
 
+          {/* ============================== */}
+          {/* PROTECTED ADMIN ROUTES */}
+          {/* ============================== */}
 
-          {/* Admin Login */}
-          <Route
-            path="/admin/login"
-            element={<AdminLogin />}
-          />
-
-          {/* Protected Admin Routes */}
           <Route element={<AdminProtectedRoute />}>
 
             <Route element={<AdminLayout />}>
@@ -163,7 +196,10 @@ const isAdminRoute = location.pathname.startsWith("/admin");
           </Route>
 
         </Routes>
+
       </main>
+
+      {/* USER FOOTER */}
 
       {!isAdminRoute && <Footer />}
 
@@ -171,6 +207,9 @@ const isAdminRoute = location.pathname.startsWith("/admin");
   );
 }
 
+// ==============================
+// MAIN APP
+// ==============================
 
 function App() {
   return (

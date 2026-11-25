@@ -5,7 +5,7 @@
       "name": "PlayStation 5 Slim",
       "brand": "Sony",
       "category": "Console",
-      "price": 49999,
+      "price": 69990,
       "description": "Next-generation gaming console with powerful performance.",
       "image": "/images/ps5.png",
       "rating": 4.9,
@@ -69,7 +69,7 @@
       "name": "Xbox Series X",
       "brand": "Microsoft",
       "category": "Console",
-      "price": 49999,
+      "price": 60000,
       "description": "Microsoft's most powerful console with 4K gaming and fast load times.",
       "image": "/images/xbox-x.png",
       "rating": 4.8,
@@ -101,7 +101,7 @@
       "name": "Xbox One",
       "brand": "Microsoft",
       "category": "Console",
-      "price": 15999,
+      "price": 37999,
       "description": "Original Xbox One with a wide library of games and apps.",
       "image": "/images/xboxone.png",
       "rating": 4.3,
@@ -133,7 +133,7 @@
       "name": "Nintendo Switch",
       "brand": "Nintendo",
       "category": "Console",
-      "price": 24999,
+      "price": 27999,
       "description": "Hybrid console that works both docked and as a handheld.",
       "image": "/images/Nontendo_Switch.png",
       "rating": 4.8,
@@ -149,7 +149,7 @@
       "name": "Nintendo Switch Lite",
       "brand": "Nintendo",
       "category": "Handheld Console",
-      "price": 17999,
+      "price": 19999,
       "description": "Compact, lightweight handheld-only version of the Switch.",
       "image": "/images/NintendoLite.png",
       "rating": 4.6,
@@ -165,7 +165,7 @@
       "name": "Nintendo Switch 2 Limited Edition",
       "brand": "Nintendo",
       "category": "Console",
-      "price": 39999,
+      "price": 64999,
       "description": "Next-generation Switch with a bigger screen and improved performance.",
       "image": "/images/switch 2lmtd.png",
       "rating": 4.9,
@@ -261,11 +261,11 @@
       "name": "OneXPlayer Handheld",
       "brand": "ONEXPLAYER",
       "category": "Handheld PC",
-      "price": 74999,
+      "price": 89999,
       "description": "High-end Windows gaming handheld with a large display.",
       "image": "/images/OneXPlayer.png",
       "rating": 4.4,
-      "stock": 5,
+      "stock": 7,
       "specifications": {
         "processor": "AMD Ryzen 7 7840U",
         "storage": "1TB SSD",
@@ -423,7 +423,7 @@
       "platform": "PlayStation",
       "price": 3499,
       "rating": 4.8,
-      "stock": 12,
+      "stock": 11,
       "image": "/images/God of War (2018) para PC - PS4 _ 3DJuegos.jpg"
     },
     {
@@ -509,10 +509,11 @@
       "brand": "Rockstar Games",
       "category": "Action-Adventure",
       "platform": "PlayStation, Xbox",
-      "price": 5999,
+      "price": 6999,
       "rating": 4.9,
       "stock": 2,
-      "image": "/images/gta6.jpg"
+      "image": "/images/gta6.jpg",
+      "description": ""
     },
     {
       "id": "37",
@@ -568,6 +569,18 @@
       "rating": 4.1,
       "stock": 8,
       "image": "/images/watchdogs2.jpg"
+    },
+    {
+      "name": "Resident Evil 7: Biohazard",
+      "brand": "Capcom",
+      "category": "Survival Horror, Action",
+      "price": 1099,
+      "stock": 18,
+      "rating": 4.5,
+      "image": "/images/Resident_Evil_7.png",
+      "description": "Experience survival horror like never before in Resident Evil 7: Biohazard.",
+      "platform": "PC, PlayStation, Xbox",
+      "id": "A7SoiDGNuW8"
     }
   ],
   "users": [
@@ -581,7 +594,8 @@
       "name": "Anshid",
       "email": "anshid123@gmail.com",
       "password": "Anshid10",
-      "id": "5-5fw53vNqQ"
+      "id": "5-5fw53vNqQ",
+      "isBlocked": true
     },
     {
       "name": "Anshid",
@@ -625,7 +639,7 @@
       "total": 79998,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "orderStatus": "Shipped",
       "createdAt": "2026-11-14T08:37:34.094Z",
       "id": "YQ7-SUf7XG8"
     },
@@ -655,7 +669,7 @@
       "total": 29999,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "orderStatus": "Processing",
       "createdAt": "2026-11-14T08:41:01.237Z",
       "id": "FFTQZ5UTIrM"
     },
@@ -685,7 +699,7 @@
       "total": 49999,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "orderStatus": "Delivered",
       "createdAt": "2026-11-14T08:43:57.231Z",
       "id": "5L37Eq5a_pY"
     },
@@ -715,7 +729,7 @@
       "total": 74999,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "orderStatus": "Shipped",
       "createdAt": "2026-11-14T08:51:25.341Z",
       "id": "9SzjuhfDzyY"
     },
@@ -775,7 +789,7 @@
       "total": 2499,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "orderStatus": "Delivered",
       "createdAt": "2026-11-14T09:19:26.869Z",
       "id": "LdItEIavI3o"
     },
@@ -829,7 +843,7 @@
       "total": 114996,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "orderStatus": "Processing",
       "createdAt": "2026-11-14T09:51:16.980Z",
       "id": "Cg7y1FRklss"
     },
@@ -867,7 +881,7 @@
       "total": 52498,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "orderStatus": "Delivered",
       "createdAt": "2026-11-14T10:06:27.387Z",
       "id": "HX7bqYwFXfo"
     },
@@ -897,7 +911,7 @@
       "total": 2499,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "orderStatus": "Shipped",
       "createdAt": "2026-11-14T10:56:51.044Z",
       "id": "UnVXmlXucfI"
     },
@@ -927,7 +941,7 @@
       "total": 199996,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "orderStatus": "Shipped",
       "createdAt": "2026-11-14T17:36:39.177Z",
       "id": "JSytDbkLy3M"
     },
@@ -965,7 +979,7 @@
       "total": 54498,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "orderStatus": "Cancelled",
       "createdAt": "2026-11-16T04:17:45.250Z",
       "id": "29bzI4upGq4"
     },
@@ -1002,8 +1016,8 @@
       "shipping": 0,
       "total": 32998,
       "paymentMethod": "Cash on Delivery",
-      "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "paymentStatus": "Paid",
+      "orderStatus": "Delivered",
       "createdAt": "2026-11-16T10:34:08.524Z",
       "id": "FysDvFfpuLc"
     },
@@ -1033,7 +1047,7 @@
       "total": 49999,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "orderStatus": "Processing",
       "createdAt": "2026-11-18T06:47:33.698Z",
       "id": "8h07fLgUUQ4"
     },
@@ -1070,8 +1084,8 @@
       "shipping": 0,
       "total": 55998,
       "paymentMethod": "Cash on Delivery",
-      "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "paymentStatus": "Paid",
+      "orderStatus": "Delivered",
       "createdAt": "2026-11-18T07:42:10.229Z",
       "id": "rnBCm3A2iG0"
     },
@@ -1101,7 +1115,7 @@
       "total": 39999,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "orderStatus": "Processing",
       "createdAt": "2026-11-18T07:57:15.710Z",
       "id": "0a-4nsEEKuA"
     },
@@ -1131,7 +1145,7 @@
       "total": 64999,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "orderStatus": "Shipped",
       "createdAt": "2026-11-18T08:23:10.700Z",
       "id": "-pwUBjfCt5Q"
     },
@@ -1161,7 +1175,7 @@
       "total": 49999,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "orderStatus": "Shipped",
       "createdAt": "2026-11-20T08:39:52.597Z",
       "id": "OK0zsL7LtV8"
     },
@@ -1222,22 +1236,59 @@
       "shipping": 0,
       "total": 111995,
       "paymentMethod": "Cash on Delivery",
-      "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "paymentStatus": "Paid",
+      "orderStatus": "Delivered",
       "createdAt": "2026-11-20T10:52:07.911Z",
       "id": "d-vvbtBzidc"
+    },
+    {
+      "userId": "5-5fw53vNqQ",
+      "customer": {
+        "name": "Anshid",
+        "email": "anshid123@gmail.com",
+        "phone": "8848305066",
+        "address": "sd",
+        "city": "sd",
+        "state": "sad",
+        "pincode": "213231"
+      },
+      "items": [
+        {
+          "id": "28",
+          "name": "God of War Ragnarok",
+          "image": "/images/God of War (2018) para PC - PS4 _ 3DJuegos.jpg",
+          "price": 3499,
+          "quantity": 1,
+          "itemType": "game"
+        },
+        {
+          "id": "18",
+          "name": "OneXPlayer Handheld",
+          "image": "/images/OneXPlayer.png",
+          "price": 74999,
+          "quantity": 5,
+          "itemType": "product"
+        }
+      ],
+      "subtotal": 378494,
+      "shipping": 0,
+      "total": 378494,
+      "paymentMethod": "Cash on Delivery",
+      "paymentStatus": "Pending",
+      "orderStatus": "Pending",
+      "createdAt": "2026-11-25T05:27:45.974Z",
+      "id": "bhrya7X6Kjw"
     }
   ],
   "carts": [],
   "wishlists": [],
-
   "admins": [
-  {
-    "id": "1",
-    "email": "admin@gamedock.com",
-    "password": "Admin@123",
-    "name": "GAME DOCK Admin"
-  }
-],
+    {
+      "id": "1",
+      "email": "admin@gamedock.com",
+      "password": "Admin@123",
+      "name": "GAME DOCK Admin"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }
