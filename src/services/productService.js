@@ -1,20 +1,32 @@
 import api from "./api";
 
-// GET - Fetch all products
+// GET - Fetch active products only
 export const getProducts = async () => {
   const response = await api.get("/products");
-  return response.data;
+
+  return response.data.filter(
+    (product) => product.isDeleted !== true
+  );
 };
 
-// GET - Fetch a single product
+// GET - Fetch a single active product
 export const getProductById = async (id) => {
   const response = await api.get(`/products/${id}`);
+
+  if (response.data.isDeleted === true) {
+    throw new Error("This product is no longer available.");
+  }
+
   return response.data;
 };
 
 // POST - Create a new product
 export const createProduct = async (product) => {
-  const response = await api.post("/products", product);
+  const response = await api.post("/products", {
+    ...product,
+    isDeleted: false,
+  });
+
   return response.data;
 };
 
@@ -24,7 +36,7 @@ export const updateProduct = async (id, product) => {
   return response.data;
 };
 
-// DELETE - Delete a product
+// DELETE - Permanently delete a product
 export const deleteProduct = async (id) => {
   const response = await api.delete(`/products/${id}`);
   return response.data;

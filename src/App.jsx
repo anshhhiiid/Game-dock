@@ -6,10 +6,11 @@ import {
   Routes,
   Navigate,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 
 // Main Components
 import Navbar from "./components/Navbar";
@@ -33,12 +34,19 @@ import About from "./pages/About";
 import Profile from "./pages/Profile";
 import MyOrders from "./pages/MyOrders";
 
-// Redux Actions
+// USER SERVICES
+import { findUserByEmail } from "./services/userService";
+
+// AUTH ACTIONS
+import { logout } from "./redux/slices/authSlice";
+
+// CART ACTIONS
 import {
   fetchUserCart,
   resetCartState,
 } from "./redux/slices/cartSlice";
 
+// WISHLIST ACTIONS
 import {
   fetchUserWishlist,
   resetWishlistState,
@@ -60,11 +68,15 @@ import AdminProtectedRoute from "./admin/components/AdminProtectedRoute";
 
 function AppContent() {
   const location = useLocation();
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   const isAdminRoute = location.pathname.startsWith("/admin");
 
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector(
+    (state) => state.auth.user
+  );
 
   // ==============================
   // FETCH USER CART AND WISHLIST
@@ -84,6 +96,81 @@ function AppContent() {
   }, [user?.id, dispatch]);
 
   // ==============================
+  // CHECK IF USER IS BLOCKED
+  // ==============================
+
+  useEffect(() => {
+    if (!user?.id || !user?.email) {
+      return;
+    }
+
+    let isChecking = false;
+    let active = true;
+
+    const checkAccountStatus = async () => {
+      if (isChecking) return;
+
+      isChecking = true;
+
+      try {
+        const latestUser = await findUserByEmail(user.email);
+
+        if (!active) return;
+
+        // ACCOUNT BLOCKED OR USER RECORD REMOVED
+        if (!latestUser || latestUser.isBlocked === true) {
+
+          // CLEAR CUSTOMER SESSION
+          localStorage.removeItem("user");
+
+          dispatch(logout());
+
+          // CLEAR CUSTOMER CART AND WISHLIST STATE
+          dispatch(resetCartState());
+          dispatch(resetWishlistState());
+
+          // SHOW BLOCKED MESSAGE
+          toast.error(
+            "Your account has been blocked by the administrator. Please contact GAME DOCK support.",
+            {
+              duration: 6000,
+            }
+          );
+
+          // REDIRECT TO LOGIN
+          navigate("/login", {
+            replace: true,
+            state: {
+              accountBlocked: true,
+            },
+          });
+        }
+
+      } catch (error) {
+        // Temporary network errors should not log out the customer.
+        console.error(
+          "Account status check failed:",
+          error
+        );
+      } finally {
+        isChecking = false;
+      }
+    };
+
+    // CHECK EVERY 3 SECONDS
+    const interval = setInterval(
+      checkAccountStatus,
+      3000
+    );
+
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+
+  }, [user?.id, user?.email, dispatch, navigate]);
+
+  // ==============================
   // UI
   // ==============================
 
@@ -100,72 +187,96 @@ function AppContent() {
 
         <Routes>
 
-          {/* ============================== */}
           {/* USER ROUTES */}
-          {/* ============================== */}
 
           <Route path="/" element={<Home />} />
 
-          <Route path="/products" element={<Products />} />
+          <Route
+            path="/products"
+            element={<Products />}
+          />
 
-          <Route path="/consoles" element={<Games />} />
+          <Route
+            path="/consoles"
+            element={<Games />}
+          />
 
-          <Route path="/games" element={<Games />} />
+          <Route
+            path="/games"
+            element={<Games />}
+          />
 
           <Route
             path="/product/:id"
             element={<ProductDetails />}
           />
 
-          {/* ============================== */}
           {/* PROTECTED USER ROUTES */}
-          {/* ============================== */}
 
           <Route element={<ProtectedRoute />}>
 
-            <Route path="/cart" element={<Cart />} />
+            <Route
+              path="/cart"
+              element={<Cart />}
+            />
 
-            <Route path="/wishlist" element={<Wishlist />} />
+            <Route
+              path="/wishlist"
+              element={<Wishlist />}
+            />
 
-            <Route path="/checkout" element={<Checkout />} />
+            <Route
+              path="/checkout"
+              element={<Checkout />}
+            />
 
             <Route
               path="/order-success/:id"
               element={<OrderSuccess />}
             />
 
-            <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/profile"
+              element={<Profile />}
+            />
 
-            <Route path="/my-orders" element={<MyOrders />} />
+            <Route
+              path="/my-orders"
+              element={<MyOrders />}
+            />
 
           </Route>
 
-          {/* ============================== */}
-          {/* COMMON AUTHENTICATION */}
-          {/* ============================== */}
+          {/* AUTHENTICATION */}
 
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/login"
+            element={<Login />}
+          />
 
-          <Route path="/register" element={<Register />} />
-
-          {/* Redirect old admin login URL to common login */}
+          <Route
+            path="/register"
+            element={<Register />}
+          />
 
           <Route
             path="/admin/login"
             element={<Navigate to="/login" replace />}
           />
 
-          {/* ============================== */}
-          {/* OTHER USER PAGES */}
-          {/* ============================== */}
+          {/* OTHER PAGES */}
 
-          <Route path="/about" element={<About />} />
+          <Route
+            path="/about"
+            element={<About />}
+          />
 
-          <Route path="/contact" element={<Contact />} />
+          <Route
+            path="/contact"
+            element={<Contact />}
+          />
 
-          {/* ============================== */}
-          {/* PROTECTED ADMIN ROUTES */}
-          {/* ============================== */}
+          {/* ADMIN ROUTES */}
 
           <Route element={<AdminProtectedRoute />}>
 
@@ -215,9 +326,49 @@ function App() {
   return (
     <BrowserRouter>
 
+      {/* GLOBAL REACT HOT TOAST STYLING */}
+
       <Toaster
         position="top-right"
         reverseOrder={false}
+        toastOptions={{
+          duration: 3000,
+
+          style: {
+            background: "#000000",
+            color: "#ffffff",
+            border: "1px solid #333333",
+            padding: "12px 16px",
+            borderRadius: "10px",
+            fontSize: "14px",
+          },
+
+          success: {
+            style: {
+              background: "#000000",
+              color: "#ffffff",
+              border: "1px solid #333333",
+            },
+
+            iconTheme: {
+              primary: "#22c55e",
+              secondary: "#000000",
+            },
+          },
+
+          error: {
+            style: {
+              background: "#000000",
+              color: "#ffffff",
+              border: "1px solid #333333",
+            },
+
+            iconTheme: {
+              primary: "#ef4444",
+              secondary: "#000000",
+            },
+          },
+        }}
       />
 
       <AppContent />

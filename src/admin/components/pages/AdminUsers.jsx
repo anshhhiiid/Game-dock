@@ -26,10 +26,12 @@ const AdminUsers = () => {
 
   const itemsPerPage = 8;
 
+  // FETCH USERS
   useEffect(() => {
     dispatch(fetchAdminUsers());
   }, [dispatch]);
 
+  // SEARCH USERS
   const filteredUsers = useMemo(() => {
     return users.filter((user) =>
       `${user.name} ${user.email}`
@@ -38,6 +40,7 @@ const AdminUsers = () => {
     );
   }, [users, search]);
 
+  // PAGINATION
   const totalPages = Math.ceil(
     filteredUsers.length / itemsPerPage
   );
@@ -47,25 +50,94 @@ const AdminUsers = () => {
     currentPage * itemsPerPage
   );
 
-  const handleStatusChange = async (user) => {
+  // BLOCK / UNBLOCK USER
+  const handleStatusChange = (user) => {
     const newStatus = !user.isBlocked;
 
-    try {
-      await dispatch(
-        changeUserStatus({
-          id: user.id,
-          isBlocked: newStatus,
-        })
-      ).unwrap();
+    const action = newStatus ? "block" : "unblock";
 
-      toast.success(
-        newStatus
-          ? "User blocked successfully"
-          : "User unblocked successfully"
-      );
-    } catch (error) {
-      toast.error(error || "Failed to update user status");
-    }
+    // CUSTOM TOAST CONFIRMATION
+    toast(
+      (t) => (
+        <div className="w-full">
+
+          <div className="mb-3">
+            <h3 className="text-white font-semibold text-sm">
+              Confirm {action}
+            </h3>
+
+            <p className="text-gray-300 text-xs mt-2 leading-relaxed">
+              {newStatus
+                ? `Are you sure you want to block ${user.name}? This user will be logged out and won't be able to log in until unblocked.`
+                : `Are you sure you want to unblock ${user.name}? This user will be able to log in again.`}
+            </p>
+          </div>
+
+          <div className="flex justify-end gap-2">
+
+            {/* CANCEL BUTTON */}
+
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="px-4 py-2 rounded-lg text-xs font-medium bg-[#252525] text-gray-300 hover:bg-[#333333] transition"
+            >
+              Cancel
+            </button>
+
+            {/* CONFIRM BUTTON */}
+
+            <button
+              onClick={async () => {
+                toast.dismiss(t.id);
+
+                try {
+                  await dispatch(
+                    changeUserStatus({
+                      id: user.id,
+                      isBlocked: newStatus,
+                    })
+                  ).unwrap();
+
+                  toast.success(
+                    newStatus
+                      ? "User blocked successfully"
+                      : "User unblocked successfully"
+                  );
+
+                } catch (error) {
+                  toast.error(
+                    error || `Failed to ${action} user`
+                  );
+                }
+              }}
+              className={`px-4 py-2 rounded-lg text-xs font-semibold text-white transition ${
+                newStatus
+                  ? "bg-red-600 hover:bg-red-700"
+                  : "bg-green-600 hover:bg-green-700"
+              }`}
+            >
+              OK
+            </button>
+
+          </div>
+
+        </div>
+      ),
+      {
+        duration: Infinity,
+        position: "top-center",
+
+        style: {
+          background: "#000000",
+          color: "#ffffff",
+          border: "1px solid #333333",
+          borderRadius: "12px",
+          padding: "16px",
+          minWidth: "320px",
+          maxWidth: "420px",
+        },
+      }
+    );
   };
 
   return (
@@ -74,7 +146,6 @@ const AdminUsers = () => {
       {/* HEADER */}
 
       <div className="mb-8">
-
         <h1 className="text-3xl font-bold">
           Users
         </h1>
@@ -82,7 +153,6 @@ const AdminUsers = () => {
         <p className="text-gray-400 mt-2">
           Manage registered GAME DOCK customers.
         </p>
-
       </div>
 
       {/* USER COUNT */}

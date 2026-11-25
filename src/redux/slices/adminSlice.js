@@ -5,11 +5,15 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  restoreProduct,
+  permanentlyDeleteProduct,
 
   getAdminGames,
   createGame,
   updateGame,
   deleteGame,
+  restoreGame,
+  permanentlyDeleteGame,
 
   getAdminUsers,
   updateUserStatus,
@@ -56,12 +60,36 @@ export const editAdminProduct = createAsyncThunk(
   }
 );
 
+// SOFT DELETE PRODUCT
 export const removeAdminProduct = createAsyncThunk(
   "admin/deleteProduct",
   async (id, { rejectWithValue }) => {
     try {
-      await deleteProduct(id);
-      return id;
+      return await deleteProduct(id);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// RESTORE PRODUCT
+export const restoreAdminProduct = createAsyncThunk(
+  "admin/restoreProduct",
+  async (id, { rejectWithValue }) => {
+    try {
+      return await restoreProduct(id);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// PERMANENTLY DELETE PRODUCT
+export const permanentlyDeleteAdminProduct = createAsyncThunk(
+  "admin/permanentlyDeleteProduct",
+  async (id, { rejectWithValue }) => {
+    try {
+      return await permanentlyDeleteProduct(id);
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -105,12 +133,36 @@ export const editAdminGame = createAsyncThunk(
   }
 );
 
+// SOFT DELETE GAME
 export const removeAdminGame = createAsyncThunk(
   "admin/deleteGame",
   async (id, { rejectWithValue }) => {
     try {
-      await deleteGame(id);
-      return id;
+      return await deleteGame(id);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// RESTORE GAME
+export const restoreAdminGame = createAsyncThunk(
+  "admin/restoreGame",
+  async (id, { rejectWithValue }) => {
+    try {
+      return await restoreGame(id);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// PERMANENTLY DELETE GAME
+export const permanentlyDeleteAdminGame = createAsyncThunk(
+  "admin/permanentlyDeleteGame",
+  async (id, { rejectWithValue }) => {
+    try {
+      return await permanentlyDeleteGame(id);
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -175,11 +227,10 @@ export const fetchAdminOrderDetails = createAsyncThunk(
 
 export const changeAdminOrderStatus = createAsyncThunk(
   "admin/changeOrderStatus",
-
   async ({ id, orderStatus }, { getState, rejectWithValue }) => {
     try {
-      // Find the existing order
       const state = getState();
+
       const order = state.admin.orders.find(
         (item) => String(item.id) === String(id)
       );
@@ -188,23 +239,16 @@ export const changeAdminOrderStatus = createAsyncThunk(
         return rejectWithValue("Order not found");
       }
 
-      // Keep existing payment status by default
       let paymentStatus = order.paymentStatus || "Pending";
 
       const paymentMethod = order.paymentMethod
         ?.trim()
         .toLowerCase();
 
-      // CASH ON DELIVERY
-      // Payment becomes Paid only after delivery
       if (paymentMethod === "cash on delivery") {
         paymentStatus =
           orderStatus === "Delivered" ? "Paid" : "Pending";
-      }
-
-      // UPI
-      // Payment becomes Paid when processing starts
-      else if (paymentMethod === "upi") {
+      } else if (paymentMethod === "upi") {
         const paidStatuses = [
           "Processing",
           "Shipped",
@@ -216,14 +260,11 @@ export const changeAdminOrderStatus = createAsyncThunk(
           : "Pending";
       }
 
-      // Update both statuses in JSON Server
-      const updatedOrder = await updateAdminOrderStatus({
+      return await updateAdminOrderStatus({
         id,
         orderStatus,
         paymentStatus,
       });
-
-      return updatedOrder;
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message ||
@@ -296,6 +337,26 @@ const adminSlice = createSlice({
       })
 
       .addCase(removeAdminProduct.fulfilled, (state, action) => {
+        const index = state.products.findIndex(
+          (item) => String(item.id) === String(action.payload.id)
+        );
+
+        if (index !== -1) {
+          state.products[index] = action.payload;
+        }
+      })
+
+      .addCase(restoreAdminProduct.fulfilled, (state, action) => {
+        const index = state.products.findIndex(
+          (item) => String(item.id) === String(action.payload.id)
+        );
+
+        if (index !== -1) {
+          state.products[index] = action.payload;
+        }
+      })
+
+      .addCase(permanentlyDeleteAdminProduct.fulfilled, (state, action) => {
         state.products = state.products.filter(
           (item) => String(item.id) !== String(action.payload)
         );
@@ -335,6 +396,26 @@ const adminSlice = createSlice({
       })
 
       .addCase(removeAdminGame.fulfilled, (state, action) => {
+        const index = state.games.findIndex(
+          (item) => String(item.id) === String(action.payload.id)
+        );
+
+        if (index !== -1) {
+          state.games[index] = action.payload;
+        }
+      })
+
+      .addCase(restoreAdminGame.fulfilled, (state, action) => {
+        const index = state.games.findIndex(
+          (item) => String(item.id) === String(action.payload.id)
+        );
+
+        if (index !== -1) {
+          state.games[index] = action.payload;
+        }
+      })
+
+      .addCase(permanentlyDeleteAdminGame.fulfilled, (state, action) => {
         state.games = state.games.filter(
           (item) => String(item.id) !== String(action.payload)
         );
@@ -403,7 +484,6 @@ const adminSlice = createSlice({
       .addCase(changeAdminOrderStatus.fulfilled, (state, action) => {
         const updatedOrder = action.payload;
 
-        // Update order in orders array
         const index = state.orders.findIndex(
           (order) =>
             String(order.id) === String(updatedOrder.id)
@@ -416,7 +496,6 @@ const adminSlice = createSlice({
           };
         }
 
-        // Update selected order details
         if (
           state.selectedOrder &&
           String(state.selectedOrder.id) ===

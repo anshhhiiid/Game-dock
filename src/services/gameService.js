@@ -1,15 +1,43 @@
 import api from "./api";
 
-export const getGames = async () => (await api.get("/games")).data;
+// GET - Fetch active games only
+export const getGames = async () => {
+  const response = await api.get("/games");
 
-export const getGameById = async (id) =>
-  (await api.get(`/games/${id}`)).data;
+  return response.data.filter(
+    (game) => game.isDeleted !== true
+  );
+};
 
-export const createGame = async (game) =>
-  (await api.post("/games", game)).data;
+// GET - Fetch a single active game
+export const getGameById = async (id) => {
+  const response = await api.get(`/games/${id}`);
 
-export const updateGame = async (id, game) =>
-  (await api.patch(`/games/${id}`, game)).data;
+  if (response.data.isDeleted === true) {
+    throw new Error("This game is no longer available.");
+  }
 
-export const deleteGame = async (id) =>
-  (await api.delete(`/games/${id}`)).data;
+  return response.data;
+};
+
+// POST - Create a new game
+export const createGame = async (game) => {
+  const response = await api.post("/games", {
+    ...game,
+    isDeleted: false,
+  });
+
+  return response.data;
+};
+
+// PATCH - Update an existing game
+export const updateGame = async (id, game) => {
+  const response = await api.patch(`/games/${id}`, game);
+  return response.data;
+};
+
+// DELETE - Permanently delete a game
+export const deleteGame = async (id) => {
+  const response = await api.delete(`/games/${id}`);
+  return response.data;
+};

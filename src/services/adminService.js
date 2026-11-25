@@ -39,7 +39,11 @@ export const getAdminProducts = async () => {
 };
 
 export const createProduct = async (product) => {
-  const response = await API.post("/products", product);
+  const response = await API.post("/products", {
+    ...product,
+    isDeleted: false,
+  });
+
   return response.data;
 };
 
@@ -48,7 +52,26 @@ export const updateProduct = async ({ id, product }) => {
   return response.data;
 };
 
+// SOFT DELETE PRODUCT
 export const deleteProduct = async (id) => {
+  const response = await API.patch(`/products/${id}`, {
+    isDeleted: true,
+  });
+
+  return response.data;
+};
+
+// RESTORE PRODUCT
+export const restoreProduct = async (id) => {
+  const response = await API.patch(`/products/${id}`, {
+    isDeleted: false,
+  });
+
+  return response.data;
+};
+
+// PERMANENTLY DELETE PRODUCT
+export const permanentlyDeleteProduct = async (id) => {
   await API.delete(`/products/${id}`);
   return id;
 };
@@ -63,7 +86,11 @@ export const getAdminGames = async () => {
 };
 
 export const createGame = async (game) => {
-  const response = await API.post("/games", game);
+  const response = await API.post("/games", {
+    ...game,
+    isDeleted: false,
+  });
+
   return response.data;
 };
 
@@ -72,7 +99,26 @@ export const updateGame = async ({ id, game }) => {
   return response.data;
 };
 
+// SOFT DELETE GAME
 export const deleteGame = async (id) => {
+  const response = await API.patch(`/games/${id}`, {
+    isDeleted: true,
+  });
+
+  return response.data;
+};
+
+// RESTORE GAME
+export const restoreGame = async (id) => {
+  const response = await API.patch(`/games/${id}`, {
+    isDeleted: false,
+  });
+
+  return response.data;
+};
+
+// PERMANENTLY DELETE GAME
+export const permanentlyDeleteGame = async (id) => {
   await API.delete(`/games/${id}`);
   return id;
 };
@@ -108,7 +154,6 @@ export const getAdminOrderDetails = async (id) => {
   return response.data;
 };
 
-// UPDATE ORDER AND PAYMENT STATUS
 export const updateAdminOrderStatus = async ({
   id,
   orderStatus,

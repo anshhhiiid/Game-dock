@@ -1,23 +1,28 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { findUserByEmail, createUser } from "../../services/userService";
+
+import {
+  findUserByEmail,
+  createUser,
+} from "../../services/userService";
 
 // REGISTER
 export const registerUser = createAsyncThunk(
   "auth/register",
   async (userData, { rejectWithValue }) => {
     try {
-      // Check whether email already exists
       const existingUser = await findUserByEmail(userData.email);
 
       if (existingUser) {
-        return rejectWithValue("Email is already registered.");
+        return rejectWithValue(
+          "Email is already registered."
+        );
       }
 
-      // Create new user
       const newUser = {
         name: userData.name,
         email: userData.email,
         password: userData.password,
+        isBlocked: false,
       };
 
       const result = await createUser(newUser);
@@ -25,7 +30,8 @@ export const registerUser = createAsyncThunk(
       return result;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Registration failed."
+        error.response?.data?.message ||
+          "Registration failed."
       );
     }
   }
@@ -37,66 +43,107 @@ export const loginUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const foundUser = await findUserByEmail(userData.email);
-      const user = foundUser && foundUser.password === userData.password ? foundUser : null;
 
-if (!user) {
-  return rejectWithValue("Invalid email or password.");
-}
+      // CHECK EMAIL AND PASSWORD
+      const user =
+        foundUser &&
+        foundUser.password === userData.password
+          ? foundUser
+          : null;
 
-// Keep the session profile only; never persist the password in localStorage.
-const safeUser = { ...user };
-delete safeUser.password;
-localStorage.setItem("user", JSON.stringify(safeUser));
+      if (!user) {
+        return rejectWithValue(
+          "Invalid email or password."
+        );
+      }
 
-return safeUser;
+      // CHECK BLOCKED STATUS
+      if (user.isBlocked === true) {
+        return rejectWithValue(
+          "Account Blocked: This account has been blocked by the administrator. Please contact GAME DOCK support for assistance."
+        );
+      }
+
+      // SAFE USER PROFILE
+      const safeUser = { ...user };
+
+      delete safeUser.password;
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify(safeUser)
+      );
+
+      return safeUser;
+
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Login failed."
+        error.response?.data?.message ||
+          "Login failed."
       );
     }
   }
 );
 
+// GET STORED USER
 const getStoredUser = () => {
   try {
-    const storedUser = JSON.parse(localStorage.getItem("user")) || null;
+    const storedUser =
+      JSON.parse(localStorage.getItem("user")) || null;
+
     if (storedUser?.password) {
       const safeUser = { ...storedUser };
+
       delete safeUser.password;
-      localStorage.setItem("user", JSON.stringify(safeUser));
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify(safeUser)
+      );
+
       return safeUser;
     }
+
     return storedUser;
+
   } catch {
     localStorage.removeItem("user");
     return null;
   }
 };
 
+// AUTH SLICE
 const authSlice = createSlice({
   name: "auth",
 
- initialState: {
-  user: getStoredUser(),
-  loading: false,
-  error: null,
-  success: false,
-},
+  initialState: {
+    user: getStoredUser(),
+    loading: false,
+    error: null,
+    success: false,
+  },
 
   reducers: {
+
+    // LOGOUT
     logout: (state) => {
       state.user = null;
       state.success = false;
       state.error = null;
+
+      localStorage.removeItem("user");
     },
 
+    // CLEAR AUTH MESSAGES
     clearAuthMessages: (state) => {
       state.error = null;
       state.success = false;
     },
+
   },
 
   extraReducers: (builder) => {
+
     builder
 
       // REGISTER
@@ -132,9 +179,13 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       });
+
   },
 });
 
-export const { logout, clearAuthMessages } = authSlice.actions;
+export const {
+  logout,
+  clearAuthMessages,
+} = authSlice.actions;
 
 export default authSlice.reducer;

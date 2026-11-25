@@ -126,7 +126,8 @@
         "processor": "IBM Xenon (3-core)",
         "storage": "250GB HDD",
         "resolution": "720p"
-      }
+      },
+      "isDeleted": false
     },
     {
       "id": "10",
@@ -501,7 +502,8 @@
       "price": 2999,
       "rating": 3.9,
       "stock": 10,
-      "image": "/images/trilogy.jpg"
+      "image": "/images/trilogy.jpg",
+      "isDeleted": false
     },
     {
       "id": "36",
@@ -588,14 +590,15 @@
       "name": "anshhhiiid",
       "email": "why.not.anshii@gmail.com",
       "password": "Anshid10",
-      "id": "IKAQ3xUmD04"
+      "id": "IKAQ3xUmD04",
+      "isBlocked": false
     },
     {
       "name": "Anshid",
       "email": "anshid123@gmail.com",
       "password": "Anshid10",
       "id": "5-5fw53vNqQ",
-      "isBlocked": true
+      "isBlocked": false
     },
     {
       "name": "Anshid",
