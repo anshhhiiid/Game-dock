@@ -583,6 +583,19 @@
       "description": "Experience survival horror like never before in Resident Evil 7: Biohazard.",
       "platform": "PC, PlayStation, Xbox",
       "id": "A7SoiDGNuW8"
+    },
+    {
+      "name": "Uncharted 4: A Thief's End",
+      "brand": "Naughty Dog",
+      "category": "Action, Adventure",
+      "price": 1499,
+      "stock": 12,
+      "rating": 4.5,
+      "image": "/images/Uncharted_4.png",
+      "description": "With stunning visuals, realistic environments, and unforgettable characters, Uncharted 4: A Thief's End delivers an incredible cinematic gaming experience.",
+      "platform": "PlayStation 4, PlayStation 5",
+      "isDeleted": false,
+      "id": "5_JzPhOlfoQ"
     }
   ],
   "users": [
@@ -1177,8 +1190,8 @@
       "shipping": 0,
       "total": 49999,
       "paymentMethod": "Cash on Delivery",
-      "paymentStatus": "Pending",
-      "orderStatus": "Shipped",
+      "paymentStatus": "Paid",
+      "orderStatus": "Delivered",
       "createdAt": "2026-11-20T08:39:52.597Z",
       "id": "OK0zsL7LtV8"
     },
@@ -1278,7 +1291,7 @@
       "total": 378494,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "orderStatus": "Processing",
       "createdAt": "2026-11-25T05:27:45.974Z",
       "id": "bhrya7X6Kjw"
     }

@@ -69,20 +69,30 @@ import AdminProtectedRoute from "./admin/components/AdminProtectedRoute";
 function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
-
-  const isAdminRoute = location.pathname.startsWith("/admin");
 
   const user = useSelector(
     (state) => state.auth.user
   );
+
+  const admin = useSelector(
+    (state) => state.adminAuth.admin
+  );
+
+  const isAdminRoute = location.pathname.startsWith("/admin");
 
   // ==============================
   // FETCH USER CART AND WISHLIST
   // ==============================
 
   useEffect(() => {
+    // Admin should not access customer cart/wishlist.
+    if (admin) {
+      dispatch(resetCartState());
+      dispatch(resetWishlistState());
+      return;
+    }
+
     if (user?.id) {
       dispatch(resetCartState());
       dispatch(resetWishlistState());
@@ -93,14 +103,14 @@ function AppContent() {
       dispatch(resetCartState());
       dispatch(resetWishlistState());
     }
-  }, [user?.id, dispatch]);
+  }, [user?.id, admin, dispatch]);
 
   // ==============================
-  // CHECK IF USER IS BLOCKED
+  // CHECK IF CUSTOMER IS BLOCKED
   // ==============================
 
   useEffect(() => {
-    if (!user?.id || !user?.email) {
+    if (admin || !user?.id || !user?.email) {
       return;
     }
 
@@ -117,19 +127,16 @@ function AppContent() {
 
         if (!active) return;
 
-        // ACCOUNT BLOCKED OR USER RECORD REMOVED
         if (!latestUser || latestUser.isBlocked === true) {
-
           // CLEAR CUSTOMER SESSION
           localStorage.removeItem("user");
 
           dispatch(logout());
 
-          // CLEAR CUSTOMER CART AND WISHLIST STATE
+          // CLEAR CUSTOMER CART AND WISHLIST
           dispatch(resetCartState());
           dispatch(resetWishlistState());
 
-          // SHOW BLOCKED MESSAGE
           toast.error(
             "Your account has been blocked by the administrator. Please contact GAME DOCK support.",
             {
@@ -137,7 +144,6 @@ function AppContent() {
             }
           );
 
-          // REDIRECT TO LOGIN
           navigate("/login", {
             replace: true,
             state: {
@@ -145,9 +151,7 @@ function AppContent() {
             },
           });
         }
-
       } catch (error) {
-        // Temporary network errors should not log out the customer.
         console.error(
           "Account status check failed:",
           error
@@ -157,7 +161,6 @@ function AppContent() {
       }
     };
 
-    // CHECK EVERY 3 SECONDS
     const interval = setInterval(
       checkAccountStatus,
       3000
@@ -167,8 +170,25 @@ function AppContent() {
       active = false;
       clearInterval(interval);
     };
+  }, [user?.id, user?.email, admin, dispatch, navigate]);
 
-  }, [user?.id, user?.email, dispatch, navigate]);
+  // ==============================
+  // EXCLUSIVE ADMIN ACCESS
+  // ==============================
+
+  // IMPORTANT:
+  // This check comes AFTER all hooks.
+  // Therefore, React always executes hooks
+  // in the same order.
+
+  if (admin && !isAdminRoute) {
+    return (
+      <Navigate
+        to="/admin/dashboard"
+        replace
+      />
+    );
+  }
 
   // ==============================
   // UI
@@ -189,7 +209,10 @@ function AppContent() {
 
           {/* USER ROUTES */}
 
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={<Home />}
+          />
 
           <Route
             path="/products"
@@ -325,8 +348,6 @@ function AppContent() {
 function App() {
   return (
     <BrowserRouter>
-
-      {/* GLOBAL REACT HOT TOAST STYLING */}
 
       <Toaster
         position="top-right"
