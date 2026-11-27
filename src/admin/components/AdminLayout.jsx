@@ -5,15 +5,15 @@ import AdminHeader from "./AdminHeader";
 
 function AdminLayout() {
   return (
-    <div className="min-h-screen bg-[#09090f] text-white">
+    <div className="min-h-screen bg-[#101014] text-white">
 
       <AdminSidebar />
 
-      <div className="ml-64 min-h-screen">
+      <div className="ml-64 min-h-screen flex flex-col">
 
         <AdminHeader />
 
-        <main className="p-8">
+        <main className="flex-1 p-5 md:p-8">
           <Outlet />
         </main>
 

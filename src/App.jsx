@@ -52,19 +52,26 @@ import {
   resetWishlistState,
 } from "./redux/slices/wishlistSlice";
 
-// Admin Pages
-import Dashboard from "./admin/components/pages/Dashboard.jsx";
-import AdminProducts from "./admin/components/pages/AdminProducts.jsx";
-import AdminUsers from "./admin/components/pages/AdminUsers.jsx";
-import AdminOrders from "./admin/components/pages/AdminOrders.jsx";
+// =====================================
+// ADMIN PAGES
+// =====================================
 
-// Admin Components
+import Dashboard from "./admin/components/pages/Dashboard";
+import AdminProducts from "./admin/components/pages/AdminProducts";
+import AdminUsers from "./admin/components/pages/AdminUsers";
+import AdminOrders from "./admin/components/pages/AdminOrders";
+import AdminProfile from "./admin/components/pages/AdminProfile";
+
+// =====================================
+// ADMIN COMPONENTS
+// =====================================
+
 import AdminLayout from "./admin/components/AdminLayout";
 import AdminProtectedRoute from "./admin/components/AdminProtectedRoute";
 
-// ==============================
+// =====================================
 // APP CONTENT
-// ==============================
+// =====================================
 
 function AppContent() {
   const location = useLocation();
@@ -81,9 +88,9 @@ function AppContent() {
 
   const isAdminRoute = location.pathname.startsWith("/admin");
 
-  // ==============================
+  // =====================================
   // FETCH USER CART AND WISHLIST
-  // ==============================
+  // =====================================
 
   useEffect(() => {
     // Admin should not access customer cart/wishlist.
@@ -105,9 +112,9 @@ function AppContent() {
     }
   }, [user?.id, admin, dispatch]);
 
-  // ==============================
+  // =====================================
   // CHECK IF CUSTOMER IS BLOCKED
-  // ==============================
+  // =====================================
 
   useEffect(() => {
     if (admin || !user?.id || !user?.email) {
@@ -172,14 +179,12 @@ function AppContent() {
     };
   }, [user?.id, user?.email, admin, dispatch, navigate]);
 
-  // ==============================
+  // =====================================
   // EXCLUSIVE ADMIN ACCESS
-  // ==============================
+  // =====================================
 
-  // IMPORTANT:
-  // This check comes AFTER all hooks.
-  // Therefore, React always executes hooks
-  // in the same order.
+  // Admin cannot access customer pages.
+  // Keep this AFTER all hooks.
 
   if (admin && !isAdminRoute) {
     return (
@@ -190,9 +195,9 @@ function AppContent() {
     );
   }
 
-  // ==============================
+  // =====================================
   // UI
-  // ==============================
+  // =====================================
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -207,7 +212,9 @@ function AppContent() {
 
         <Routes>
 
-          {/* USER ROUTES */}
+          {/* =====================================
+              USER ROUTES
+          ===================================== */}
 
           <Route
             path="/"
@@ -234,7 +241,9 @@ function AppContent() {
             element={<ProductDetails />}
           />
 
-          {/* PROTECTED USER ROUTES */}
+          {/* =====================================
+              PROTECTED USER ROUTES
+          ===================================== */}
 
           <Route element={<ProtectedRoute />}>
 
@@ -270,7 +279,9 @@ function AppContent() {
 
           </Route>
 
-          {/* AUTHENTICATION */}
+          {/* =====================================
+              AUTHENTICATION
+          ===================================== */}
 
           <Route
             path="/login"
@@ -287,7 +298,9 @@ function AppContent() {
             element={<Navigate to="/login" replace />}
           />
 
-          {/* OTHER PAGES */}
+          {/* =====================================
+              OTHER PAGES
+          ===================================== */}
 
           <Route
             path="/about"
@@ -299,35 +312,78 @@ function AppContent() {
             element={<Contact />}
           />
 
-          {/* ADMIN ROUTES */}
+          {/* =====================================
+              ADMIN ROUTES
+          ===================================== */}
 
           <Route element={<AdminProtectedRoute />}>
 
-            <Route element={<AdminLayout />}>
+            {/* ADMIN LAYOUT */}
+
+            <Route
+              path="/admin"
+              element={<AdminLayout />}
+            >
+
+              {/* ADMIN PROFILE */}
 
               <Route
-                path="/admin/dashboard"
+                path="profile"
+                element={<AdminProfile />}
+              />
+
+              {/* DASHBOARD */}
+
+              <Route
+                path="dashboard"
                 element={<Dashboard />}
               />
 
+              {/* PRODUCTS AND GAMES */}
+
               <Route
-                path="/admin/products"
+                path="products"
                 element={<AdminProducts />}
               />
 
+              {/* USERS */}
+
               <Route
-                path="/admin/users"
+                path="users"
                 element={<AdminUsers />}
               />
 
+              {/* ORDERS */}
+
               <Route
-                path="/admin/orders"
+                path="orders"
                 element={<AdminOrders />}
+              />
+
+              {/* DEFAULT ADMIN PAGE */}
+
+              <Route
+                index
+                element={
+                  <Navigate
+                    to="/admin/dashboard"
+                    replace
+                  />
+                }
               />
 
             </Route>
 
           </Route>
+
+          {/* =====================================
+              FALLBACK ROUTE
+          ===================================== */}
+
+          <Route
+            path="*"
+            element={<Navigate to="/" replace />}
+          />
 
         </Routes>
 
@@ -341,9 +397,9 @@ function AppContent() {
   );
 }
 
-// ==============================
+// =====================================
 // MAIN APP
-// ==============================
+// =====================================
 
 function App() {
   return (

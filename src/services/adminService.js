@@ -7,9 +7,9 @@ const API = axios.create({
   },
 });
 
-// ==============================
+// =====================================
 // ADMIN LOGIN
-// ==============================
+// =====================================
 
 export const adminLoginAPI = async (credentials) => {
   const response = await API.get(
@@ -24,14 +24,80 @@ export const adminLoginAPI = async (credentials) => {
     throw new Error("Invalid admin email or password");
   }
 
+  // Never return password
   const { password, ...safeAdmin } = admin;
 
   return safeAdmin;
 };
 
-// ==============================
+// =====================================
+// ADMIN PROFILE UPDATE
+// =====================================
+
+export const updateAdminProfileAPI = async ({
+  id,
+  name,
+  email,
+  phone,
+  profileImage,
+  currentPassword,
+  newPassword,
+}) => {
+  // Get existing admin record
+  const response = await API.get(`/admins/${id}`);
+
+  const existingAdmin = response.data;
+
+  if (!existingAdmin) {
+    throw new Error("Admin account not found.");
+  }
+
+  // Check duplicate email
+  const emailResponse = await API.get(
+    `/admins?email=${encodeURIComponent(email)}`
+  );
+
+  const emailExists = emailResponse.data.some(
+    (item) => String(item.id) !== String(id)
+  );
+
+  if (emailExists) {
+    throw new Error("This email is already being used.");
+  }
+
+  // Verify current password when changing password
+  if (newPassword) {
+    if (existingAdmin.password !== currentPassword) {
+      throw new Error("Current password is incorrect.");
+    }
+  }
+
+  const updatedData = {
+    name,
+    email,
+    phone,
+    profileImage,
+  };
+
+  // Only update password when requested
+  if (newPassword) {
+    updatedData.password = newPassword;
+  }
+
+  const updateResponse = await API.patch(
+    `/admins/${id}`,
+    updatedData
+  );
+
+  // Never return password to Redux or localStorage
+  const { password, ...safeAdmin } = updateResponse.data;
+
+  return safeAdmin;
+};
+
+// =====================================
 // PRODUCTS
-// ==============================
+// =====================================
 
 export const getAdminProducts = async () => {
   const response = await API.get("/products");
@@ -52,7 +118,6 @@ export const updateProduct = async ({ id, product }) => {
   return response.data;
 };
 
-// SOFT DELETE PRODUCT
 export const deleteProduct = async (id) => {
   const response = await API.patch(`/products/${id}`, {
     isDeleted: true,
@@ -61,7 +126,6 @@ export const deleteProduct = async (id) => {
   return response.data;
 };
 
-// RESTORE PRODUCT
 export const restoreProduct = async (id) => {
   const response = await API.patch(`/products/${id}`, {
     isDeleted: false,
@@ -70,15 +134,14 @@ export const restoreProduct = async (id) => {
   return response.data;
 };
 
-// PERMANENTLY DELETE PRODUCT
 export const permanentlyDeleteProduct = async (id) => {
   await API.delete(`/products/${id}`);
   return id;
 };
 
-// ==============================
+// =====================================
 // GAMES
-// ==============================
+// =====================================
 
 export const getAdminGames = async () => {
   const response = await API.get("/games");
@@ -99,7 +162,6 @@ export const updateGame = async ({ id, game }) => {
   return response.data;
 };
 
-// SOFT DELETE GAME
 export const deleteGame = async (id) => {
   const response = await API.patch(`/games/${id}`, {
     isDeleted: true,
@@ -108,7 +170,6 @@ export const deleteGame = async (id) => {
   return response.data;
 };
 
-// RESTORE GAME
 export const restoreGame = async (id) => {
   const response = await API.patch(`/games/${id}`, {
     isDeleted: false,
@@ -117,15 +178,14 @@ export const restoreGame = async (id) => {
   return response.data;
 };
 
-// PERMANENTLY DELETE GAME
 export const permanentlyDeleteGame = async (id) => {
   await API.delete(`/games/${id}`);
   return id;
 };
 
-// ==============================
+// =====================================
 // USERS
-// ==============================
+// =====================================
 
 export const getAdminUsers = async () => {
   const response = await API.get("/users");
@@ -140,9 +200,9 @@ export const updateUserStatus = async ({ id, isBlocked }) => {
   return response.data;
 };
 
-// ==============================
+// =====================================
 // ORDERS
-// ==============================
+// =====================================
 
 export const getAdminOrders = async () => {
   const response = await API.get("/orders");
@@ -166,5 +226,9 @@ export const updateAdminOrderStatus = async ({
 
   return response.data;
 };
+
+// =====================================
+// DEFAULT EXPORT
+// =====================================
 
 export default API;

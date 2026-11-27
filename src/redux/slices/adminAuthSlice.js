@@ -1,6 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { adminLoginAPI } from "../../services/adminService";
+import {
+  adminLoginAPI,
+  updateAdminProfileAPI,
+} from "../../services/adminService";
+
 import { logout } from "./authSlice";
 
 // ==============================
@@ -31,18 +35,43 @@ export const adminLogin = createAsyncThunk(
     try {
       const admin = await adminLoginAPI(credentials);
 
-      // SAVE ADMIN SESSION
       localStorage.setItem(
         "gamedock_admin",
         JSON.stringify(admin)
       );
 
-      // CLEAR CUSTOMER SESSION
       localStorage.removeItem("user");
       dispatch(logout());
 
       return admin;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || error.message
+      );
+    }
+  }
+);
 
+// ==============================
+// UPDATE ADMIN PROFILE
+// ==============================
+
+export const updateAdminProfile = createAsyncThunk(
+  "adminAuth/updateProfile",
+
+  async (profileData, { rejectWithValue }) => {
+    try {
+      const updatedAdmin = await updateAdminProfileAPI(
+        profileData
+      );
+
+      // Update saved admin session
+      localStorage.setItem(
+        "gamedock_admin",
+        JSON.stringify(updatedAdmin)
+      );
+
+      return updatedAdmin;
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || error.message
@@ -65,21 +94,16 @@ const adminAuthSlice = createSlice({
   },
 
   reducers: {
-
-    // ==============================
-    // ADMIN LOGOUT
-    // ==============================
-
     adminLogout: (state) => {
       state.admin = null;
-
       localStorage.removeItem("gamedock_admin");
     },
-
   },
 
   extraReducers: (builder) => {
     builder
+
+      // LOGIN
 
       .addCase(adminLogin.pending, (state) => {
         state.loading = true;
@@ -94,8 +118,24 @@ const adminAuthSlice = createSlice({
       .addCase(adminLogin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
 
+      // PROFILE UPDATE
+
+      .addCase(updateAdminProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(updateAdminProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.admin = action.payload;
+      })
+
+      .addCase(updateAdminProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 

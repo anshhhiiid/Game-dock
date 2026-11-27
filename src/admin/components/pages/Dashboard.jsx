@@ -1,9 +1,9 @@
-
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
   fetchAdminProducts,
+  fetchAdminGames,
   fetchAdminUsers,
   fetchAdminOrders,
 } from "../../../redux/slices/adminSlice";
@@ -58,14 +58,19 @@ const getOrderStatusStyle = (status) => {
   switch (status?.toLowerCase()) {
     case "pending":
       return "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20";
+
     case "processing":
       return "bg-blue-500/10 text-blue-400 border border-blue-500/20";
+
     case "shipped":
       return "bg-purple-500/10 text-purple-400 border border-purple-500/20";
+
     case "delivered":
       return "bg-green-500/10 text-green-400 border border-green-500/20";
+
     case "cancelled":
       return "bg-red-500/10 text-red-400 border border-red-500/20";
+
     default:
       return "bg-gray-500/10 text-gray-400 border border-gray-500/20";
   }
@@ -77,6 +82,7 @@ const getOrderStatusStyle = (status) => {
 
 const getValidDate = (date) => {
   const parsed = new Date(date);
+
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 };
 
@@ -108,14 +114,18 @@ const CustomTooltip = ({ active, payload, label }) => {
 
   return (
     <div className="bg-[#100E1B] border border-purple-500/30 rounded-xl p-3 shadow-2xl min-w-[145px]">
-      <p className="text-gray-400 text-xs mb-2">{label}</p>
+      <p className="text-gray-400 text-xs mb-2">
+        {label}
+      </p>
 
       {payload.map((item, index) => (
         <div
           key={index}
           className="flex items-center justify-between gap-4 mb-1.5 last:mb-0"
         >
-          <span className="text-gray-300 text-xs">{item.name}</span>
+          <span className="text-gray-300 text-xs">
+            {item.name}
+          </span>
 
           <span className="text-white font-semibold text-xs">
             {item.dataKey === "revenue"
@@ -135,9 +145,13 @@ const CustomTooltip = ({ active, payload, label }) => {
 const Dashboard = () => {
   const dispatch = useDispatch();
 
-  const { products, users, orders, loading } = useSelector(
-    (state) => state.admin
-  );
+  const {
+    products,
+    games,
+    users,
+    orders,
+    loading,
+  } = useSelector((state) => state.admin);
 
   const [dateRange, setDateRange] = useState("7");
 
@@ -148,6 +162,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchDashboardData = () => {
       dispatch(fetchAdminProducts());
+      dispatch(fetchAdminGames());
       dispatch(fetchAdminUsers());
       dispatch(fetchAdminOrders());
     };
@@ -165,6 +180,29 @@ const Dashboard = () => {
       clearInterval(interval);
     };
   }, [dispatch]);
+
+  // ==============================
+  // ACTIVE PRODUCTS AND GAMES
+  // ==============================
+
+  // Exclude items in Recently Deleted.
+
+  const activeProducts = useMemo(() => {
+    return products.filter(
+      (item) => item.isDeleted !== true
+    );
+  }, [products]);
+
+  const activeGames = useMemo(() => {
+    return games.filter(
+      (item) => item.isDeleted !== true
+    );
+  }, [games]);
+
+  // Total = Consoles + Accessories + Games
+
+  const totalProducts =
+    activeProducts.length + activeGames.length;
 
   // ==============================
   // REVENUE ORDERS
@@ -190,7 +228,7 @@ const Dashboard = () => {
   const stats = [
     {
       title: "Total Products",
-      value: products.length,
+      value: totalProducts,
       icon: Package,
     },
     {
@@ -228,10 +266,12 @@ const Dashboard = () => {
 
         data.push({
           key: `${date.getFullYear()}-${date.getMonth()}`,
+
           name: date.toLocaleDateString("en-IN", {
             month: "short",
             year: "2-digit",
           }),
+
           revenue: 0,
           orders: 0,
         });
@@ -239,10 +279,14 @@ const Dashboard = () => {
 
       orders.forEach((order) => {
         const date = getValidDate(order.createdAt);
+
         if (!date) return;
 
         const key = `${date.getFullYear()}-${date.getMonth()}`;
-        const item = data.find((entry) => entry.key === key);
+
+        const item = data.find(
+          (entry) => entry.key === key
+        );
 
         if (item) {
           item.orders += 1;
@@ -257,6 +301,7 @@ const Dashboard = () => {
 
       for (let i = days - 1; i >= 0; i--) {
         const date = new Date(today);
+
         date.setHours(0, 0, 0, 0);
         date.setDate(date.getDate() - i);
 
@@ -264,10 +309,12 @@ const Dashboard = () => {
 
         data.push({
           key,
+
           name: date.toLocaleDateString("en-IN", {
             day: "numeric",
             month: "short",
           }),
+
           revenue: 0,
           orders: 0,
         });
@@ -275,6 +322,7 @@ const Dashboard = () => {
 
       orders.forEach((order) => {
         const date = getValidDate(order.createdAt);
+
         if (!date) return;
 
         const key = new Date(
@@ -283,7 +331,9 @@ const Dashboard = () => {
           date.getDate()
         ).toDateString();
 
-        const item = data.find((entry) => entry.key === key);
+        const item = data.find(
+          (entry) => entry.key === key
+        );
 
         if (item) {
           item.orders += 1;
@@ -305,11 +355,13 @@ const Dashboard = () => {
   const statusChartData = useMemo(() => {
     return STATUS_LIST.map((status) => ({
       name: status,
+
       value: orders.filter(
         (order) =>
           (order.orderStatus || "Pending").toLowerCase() ===
           status.toLowerCase()
       ).length,
+
       color: STATUS_COLORS[status],
     }));
   }, [orders]);
@@ -346,6 +398,7 @@ const Dashboard = () => {
 
   return (
     <div className="p-4 md:p-6 xl:p-7 text-white">
+
       {/* HEADER */}
 
       <div className="mb-7">
@@ -387,7 +440,10 @@ const Dashboard = () => {
                 </div>
 
                 <div className="bg-purple-500/10 border border-purple-500/20 p-3 rounded-xl">
-                  <Icon className="text-purple-400" size={22} />
+                  <Icon
+                    className="text-purple-400"
+                    size={22}
+                  />
                 </div>
               </div>
 
@@ -397,18 +453,24 @@ const Dashboard = () => {
         })}
       </div>
 
-      {/* ANALYTICS ROW: 50% GRAPH + 50% ORDER STATUS */}
+      {/* ANALYTICS ROW */}
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 mt-6 items-stretch">
+
         {/* SALES & ORDERS GRAPH */}
 
         <div className="min-w-0 bg-gradient-to-br from-[#1D1930] via-[#171426] to-[#12101F] border border-purple-500/20 rounded-2xl p-4 md:p-5 shadow-xl shadow-black/20">
+
           {/* GRAPH HEADER */}
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+
             <div className="flex items-center gap-3 min-w-0">
               <div className="p-2 bg-purple-500/15 rounded-xl shrink-0">
-                <TrendingUp className="text-purple-400" size={20} />
+                <TrendingUp
+                  className="text-purple-400"
+                  size={20}
+                />
               </div>
 
               <div className="min-w-0">
@@ -444,14 +506,21 @@ const Dashboard = () => {
           {/* GRAPH LEGEND */}
 
           <div className="flex flex-wrap gap-4 mb-3">
+
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-purple-500" />
-              <span className="text-gray-400 text-xs">Revenue</span>
+
+              <span className="text-gray-400 text-xs">
+                Revenue
+              </span>
             </div>
 
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-cyan-400" />
-              <span className="text-gray-400 text-xs">Orders</span>
+
+              <span className="text-gray-400 text-xs">
+                Orders
+              </span>
             </div>
           </div>
 
@@ -477,7 +546,10 @@ const Dashboard = () => {
                 <XAxis
                   dataKey="name"
                   stroke="#9CA3AF"
-                  tick={{ fontSize: 10, fill: "#9CA3AF" }}
+                  tick={{
+                    fontSize: 10,
+                    fill: "#9CA3AF",
+                  }}
                   axisLine={false}
                   tickLine={false}
                   dy={8}
@@ -491,7 +563,10 @@ const Dashboard = () => {
                       ? `₹${value / 1000}k`
                       : `₹${value}`
                   }
-                  tick={{ fontSize: 9, fill: "#9CA3AF" }}
+                  tick={{
+                    fontSize: 9,
+                    fill: "#9CA3AF",
+                  }}
                   axisLine={false}
                   tickLine={false}
                   width={55}
@@ -502,7 +577,10 @@ const Dashboard = () => {
                   orientation="right"
                   stroke="#9CA3AF"
                   allowDecimals={false}
-                  tick={{ fontSize: 9, fill: "#9CA3AF" }}
+                  tick={{
+                    fontSize: 9,
+                    fill: "#9CA3AF",
+                  }}
                   axisLine={false}
                   tickLine={false}
                   width={25}
@@ -549,11 +627,15 @@ const Dashboard = () => {
         {/* ORDER STATUS DISTRIBUTION */}
 
         <div className="min-w-0 bg-gradient-to-br from-[#1D1930] via-[#171426] to-[#12101F] border border-purple-500/20 rounded-2xl p-4 md:p-5 shadow-xl shadow-black/20">
+
           {/* STATUS HEADER */}
 
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 bg-purple-500/15 rounded-xl shrink-0">
-              <Activity className="text-purple-400" size={20} />
+              <Activity
+                className="text-purple-400"
+                size={20}
+              />
             </div>
 
             <div>
@@ -580,6 +662,7 @@ const Dashboard = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-[190px_minmax(0,1fr)] gap-3 items-center">
+
               {/* DONUT CHART */}
 
               <div className="relative h-[220px] min-w-0">
@@ -638,7 +721,7 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              {/* COMPACT STATUS BREAKDOWN */}
+              {/* STATUS BREAKDOWN */}
 
               <div className="space-y-3">
                 {statusChartData.map((item) => {
@@ -650,6 +733,7 @@ const Dashboard = () => {
                   return (
                     <div key={item.name}>
                       <div className="flex justify-between items-center mb-1.5 gap-2">
+
                         <div className="flex items-center gap-2 min-w-0">
                           <span
                             className="w-2 h-2 rounded-full shrink-0"
@@ -695,6 +779,7 @@ const Dashboard = () => {
       {/* RECENT ORDERS */}
 
       <div className="mt-6 bg-gradient-to-br from-[#1D1930] to-[#151322] border border-purple-500/10 rounded-2xl overflow-hidden">
+
         <div className="p-5 border-b border-purple-500/10">
           <h2 className="text-lg font-bold">
             Recent Orders
@@ -712,6 +797,7 @@ const Dashboard = () => {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left min-w-[650px]">
+
               <thead className="bg-[#100E1B] text-gray-400 text-xs">
                 <tr>
                   <th className="p-4">Order ID</th>
@@ -724,7 +810,8 @@ const Dashboard = () => {
 
               <tbody>
                 {recentOrders.map((order) => {
-                  const orderStatus = order.orderStatus || "Pending";
+                  const orderStatus =
+                    order.orderStatus || "Pending";
 
                   return (
                     <tr
@@ -764,6 +851,7 @@ const Dashboard = () => {
                   );
                 })}
               </tbody>
+
             </table>
           </div>
         )}

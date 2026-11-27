@@ -14,7 +14,8 @@
         "processor": "AMD Zen 2",
         "storage": "1TB SSD",
         "resolution": "4K"
-      }
+      },
+      "isDeleted": false
     },
     {
       "id": "3",
@@ -654,8 +655,8 @@
       "shipping": 0,
       "total": 79998,
       "paymentMethod": "Cash on Delivery",
-      "paymentStatus": "Pending",
-      "orderStatus": "Shipped",
+      "paymentStatus": "Paid",
+      "orderStatus": "Delivered",
       "createdAt": "2026-11-14T08:37:34.094Z",
       "id": "YQ7-SUf7XG8"
     },
@@ -685,7 +686,7 @@
       "total": 29999,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Processing",
+      "orderStatus": "Shipped",
       "createdAt": "2026-11-14T08:41:01.237Z",
       "id": "FFTQZ5UTIrM"
     },
@@ -744,8 +745,8 @@
       "shipping": 0,
       "total": 74999,
       "paymentMethod": "Cash on Delivery",
-      "paymentStatus": "Pending",
-      "orderStatus": "Shipped",
+      "paymentStatus": "Paid",
+      "orderStatus": "Delivered",
       "createdAt": "2026-11-14T08:51:25.341Z",
       "id": "9SzjuhfDzyY"
     },
@@ -775,7 +776,7 @@
       "total": 19999,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Pending",
+      "orderStatus": "Processing",
       "createdAt": "2026-11-14T08:54:11.822Z",
       "id": "6tDerkgvLVw"
     },
@@ -805,7 +806,7 @@
       "total": 2499,
       "paymentMethod": "Cash on Delivery",
       "paymentStatus": "Pending",
-      "orderStatus": "Delivered",
+      "orderStatus": "Shipped",
       "createdAt": "2026-11-14T09:19:26.869Z",
       "id": "LdItEIavI3o"
     },
@@ -994,8 +995,8 @@
       "shipping": 0,
       "total": 54498,
       "paymentMethod": "Cash on Delivery",
-      "paymentStatus": "Pending",
-      "orderStatus": "Cancelled",
+      "paymentStatus": "Paid",
+      "orderStatus": "Delivered",
       "createdAt": "2026-11-16T04:17:45.250Z",
       "id": "29bzI4upGq4"
     },

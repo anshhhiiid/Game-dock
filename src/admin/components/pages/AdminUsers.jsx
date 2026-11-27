@@ -26,12 +26,10 @@ const AdminUsers = () => {
 
   const itemsPerPage = 8;
 
-  // FETCH USERS
   useEffect(() => {
     dispatch(fetchAdminUsers());
   }, [dispatch]);
 
-  // SEARCH USERS
   const filteredUsers = useMemo(() => {
     return users.filter((user) =>
       `${user.name} ${user.email}`
@@ -40,7 +38,6 @@ const AdminUsers = () => {
     );
   }, [users, search]);
 
-  // PAGINATION
   const totalPages = Math.ceil(
     filteredUsers.length / itemsPerPage
   );
@@ -50,17 +47,13 @@ const AdminUsers = () => {
     currentPage * itemsPerPage
   );
 
-  // BLOCK / UNBLOCK USER
   const handleStatusChange = (user) => {
     const newStatus = !user.isBlocked;
-
     const action = newStatus ? "block" : "unblock";
 
-    // CUSTOM TOAST CONFIRMATION
     toast(
       (t) => (
         <div className="w-full">
-
           <div className="mb-3">
             <h3 className="text-white font-semibold text-sm">
               Confirm {action}
@@ -74,17 +67,12 @@ const AdminUsers = () => {
           </div>
 
           <div className="flex justify-end gap-2">
-
-            {/* CANCEL BUTTON */}
-
             <button
               onClick={() => toast.dismiss(t.id)}
               className="px-4 py-2 rounded-lg text-xs font-medium bg-[#252525] text-gray-300 hover:bg-[#333333] transition"
             >
               Cancel
             </button>
-
-            {/* CONFIRM BUTTON */}
 
             <button
               onClick={async () => {
@@ -103,7 +91,6 @@ const AdminUsers = () => {
                       ? "User blocked successfully"
                       : "User unblocked successfully"
                   );
-
                 } catch (error) {
                   toast.error(
                     error || `Failed to ${action} user`
@@ -113,24 +100,21 @@ const AdminUsers = () => {
               className={`px-4 py-2 rounded-lg text-xs font-semibold text-white transition ${
                 newStatus
                   ? "bg-red-600 hover:bg-red-700"
-                  : "bg-green-600 hover:bg-green-700"
+                  : "bg-purple-600 hover:bg-purple-700"
               }`}
             >
-              OK
+              Confirm
             </button>
-
           </div>
-
         </div>
       ),
       {
         duration: Infinity,
         position: "top-center",
-
         style: {
-          background: "#000000",
+          background: "#101014",
           color: "#ffffff",
-          border: "1px solid #333333",
+          border: "1px solid #29252f",
           borderRadius: "12px",
           padding: "16px",
           minWidth: "320px",
@@ -142,7 +126,6 @@ const AdminUsers = () => {
 
   return (
     <div className="p-5 md:p-8 text-white">
-
       {/* HEADER */}
 
       <div className="mb-8">
@@ -157,10 +140,9 @@ const AdminUsers = () => {
 
       {/* USER COUNT */}
 
-      <div className="bg-[#151b27] border border-gray-800 p-5 rounded-xl mb-6 flex items-center gap-4">
-
-        <div className="bg-red-500/10 p-3 rounded-lg">
-          <Users className="text-red-500" size={25} />
+      <div className="bg-[#151519] border border-[#29252f] p-5 rounded-xl mb-6 flex items-center gap-4">
+        <div className="bg-purple-500/10 p-3 rounded-lg">
+          <Users className="text-purple-400" size={25} />
         </div>
 
         <div>
@@ -172,13 +154,11 @@ const AdminUsers = () => {
             {users.length}
           </h2>
         </div>
-
       </div>
 
       {/* SEARCH */}
 
       <div className="relative mb-6 max-w-md">
-
         <Search
           className="absolute left-3 top-3 text-gray-400"
           size={20}
@@ -191,67 +171,49 @@ const AdminUsers = () => {
             setCurrentPage(1);
           }}
           placeholder="Search users..."
-          className="w-full bg-[#151b27] border border-gray-700 rounded-lg pl-11 pr-4 py-3 outline-none focus:border-red-500"
+          className="w-full bg-[#151519] border border-[#33303a] rounded-lg pl-11 pr-4 py-3 outline-none focus:border-purple-500 transition"
         />
-
       </div>
 
       {/* USER TABLE */}
 
-      <div className="bg-[#151b27] border border-gray-800 rounded-xl overflow-hidden">
-
+      <div className="bg-[#151519] border border-[#29252f] rounded-xl overflow-hidden">
         {loading ? (
-
           <p className="p-10 text-center text-gray-400">
             Loading users...
           </p>
-
         ) : filteredUsers.length === 0 ? (
-
           <p className="p-10 text-center text-gray-400">
             No users found.
           </p>
-
         ) : (
-
           <div className="overflow-x-auto">
-
             <table className="w-full min-w-[750px] text-left">
-
-              <thead className="bg-[#0d121d] text-gray-400 text-sm">
-
+              <thead className="bg-[#101014] text-gray-400 text-sm">
                 <tr>
                   <th className="p-4">User</th>
                   <th className="p-4">Email</th>
                   <th className="p-4">Status</th>
                   <th className="p-4">Action</th>
                 </tr>
-
               </thead>
 
               <tbody>
-
                 {displayedUsers.map((user) => (
-
                   <tr
                     key={user.id}
-                    className="border-t border-gray-800 hover:bg-white/5"
+                    className="border-t border-[#29252f] hover:bg-purple-500/[0.03] transition"
                   >
-
                     <td className="p-4">
-
                       <div className="flex items-center gap-3">
-
-                        <div className="w-10 h-10 rounded-full bg-red-500/10 text-red-400 flex items-center justify-center font-bold">
+                        <div className="w-10 h-10 rounded-full bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold">
                           {user.name?.charAt(0)?.toUpperCase() || "U"}
                         </div>
 
                         <span className="font-medium">
                           {user.name || "Unknown"}
                         </span>
-
                       </div>
-
                     </td>
 
                     <td className="p-4 text-gray-300">
@@ -259,7 +221,6 @@ const AdminUsers = () => {
                     </td>
 
                     <td className="p-4">
-
                       <span
                         className={
                           user.isBlocked
@@ -269,20 +230,17 @@ const AdminUsers = () => {
                       >
                         {user.isBlocked ? "Blocked" : "Active"}
                       </span>
-
                     </td>
 
                     <td className="p-4">
-
                       <button
                         onClick={() => handleStatusChange(user)}
                         className={
                           user.isBlocked
-                            ? "flex items-center gap-2 text-green-400 hover:text-green-300"
-                            : "flex items-center gap-2 text-red-400 hover:text-red-300"
+                            ? "flex items-center gap-2 text-purple-400 hover:text-purple-300 transition"
+                            : "flex items-center gap-2 text-red-400 hover:text-red-300 transition"
                         }
                       >
-
                         {user.isBlocked ? (
                           <>
                             <CheckCircle size={18} />
@@ -294,35 +252,24 @@ const AdminUsers = () => {
                             Block
                           </>
                         )}
-
                       </button>
-
                     </td>
-
                   </tr>
-
                 ))}
-
               </tbody>
-
             </table>
-
           </div>
-
         )}
-
       </div>
 
       {/* PAGINATION */}
 
       {totalPages > 1 && (
-
         <div className="flex justify-center items-center gap-4 mt-6">
-
           <button
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((page) => page - 1)}
-            className="px-4 py-2 bg-[#151b27] rounded disabled:opacity-40"
+            className="px-4 py-2 bg-[#151519] border border-[#29252f] rounded-lg hover:border-purple-500/40 transition disabled:opacity-40"
           >
             Previous
           </button>
@@ -334,15 +281,12 @@ const AdminUsers = () => {
           <button
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage((page) => page + 1)}
-            className="px-4 py-2 bg-[#151b27] rounded disabled:opacity-40"
+            className="px-4 py-2 bg-[#151519] border border-[#29252f] rounded-lg hover:border-purple-500/40 transition disabled:opacity-40"
           >
             Next
           </button>
-
         </div>
-
       )}
-
     </div>
   );
 };
